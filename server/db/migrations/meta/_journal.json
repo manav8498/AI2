@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1739854489530,
+      "tag": "0000_oval_doctor_spectrum",
+      "breakpoints": true
+    }
+  ]
+}
