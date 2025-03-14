@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3f51b5;
+            --secondary: #ff9800;
+            --light: #f5f5f5;
+            --dark: #212121;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        
+        .navbar {
+            background-color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+        }
+        
+        .nav-link.active {
+            color: white !important;
+            border-bottom: 2px solid var(--secondary);
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(63, 81, 181, 0.8), rgba(63, 81, 181, 0.9)), url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .stats-box {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            height: 100%;
+        }
+        
+        .stats-box:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stats-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        
+        .book-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            height: 100%;
+        }
+        
+        .book-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .book-card img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .book-card .card-body {
+            padding: 20px;
+        }
+        
+        .book-card .book-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .book-card .book-author {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 12px;
+        }
+        
+        .book-card .book-status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .book-card .book-status.available {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .book-card .book-status.borrowed {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 30px 0;
+        }
+        
+        .page-content {
+            min-height: calc(100vh - 270px);
+            padding: 40px 0;
+        }
+        
+        /* Books page styles */
+        .search-bar {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .book-list-item {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            transition: transform 0.2s ease;
+        }
+        
+        .book-list-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .book-genre {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            background-color: #e3f2fd;
+            color: #1565c0;
+            margin-right: 5px;
+        }
+        
+        /* User Dashboard styles */
+        .user-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+        }
+        
+        .borrowed-book {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .borrowed-book-cover {
+            width: 60px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 15px;
+        }
+        
+        .return-date {
+            color: #d32f2f;
+            font-weight: 500;
+        }
+        
+        .soon-return {
+            color: #f57c00;
+        }
+        
+        /* Tab content styling */
+        .tab-content {
+            background-color: white;
+            border-radius: 0 0 8px 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-tabs .nav-link {
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-book-open me-2"></i>LibraryMS
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" id="home-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="books-link">Books</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="dashboard-link">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content Container -->
+    <div id="page-container">
+        <!-- Home Page -->
+        <div id="home-page">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="container">
+                    <h1 class="display-4 fw-bold">Welcome to Our Library</h1>
+                    <p class="lead">Discover thousands of books and manage your reading journey</p>
+                    <button class="btn btn-warning btn-lg mt-3" id="explore-books-btn">Explore Books</button>
+                </div>
+            </section>
+
+            <!-- Main Content -->
+            <div class="page-content">
+                <div class="container">
+                    <!-- Stats Section -->
+                    <section class="mb-5">
+                        <h2 class="text-center mb-4">Library Overview</h2>
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <div class="stats-box text-center">
+                                    <div class="stats-icon">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                    <div class="stats-number">5,000+</div>
+                                    <div class="stats-title">Books Available</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="stats-box text-center">
+                                    <div class="stats-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="stats-number">1,200+</div>
+                                    <div class="stats-title">Active Members</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="stats-box text-center">
+                                    <div class="stats-icon">
+                                        <i class="fas fa-bookmark"></i>
+                                    </div>
+                                    <div class="stats-number">200+</div>
+                                    <div class="stats-title">Books Borrowed</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Featured Books Section -->
+                    <section>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2>Featured Books</h2>
+                            <a href="#" class="btn btn-outline-primary" id="view-all-books">View All</a>
+                        </div>
+                        <div class="row g-4" id="featured-books-container">
+                            <!-- Featured books will be loaded here -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <!-- Books Page -->
+        <div id="books-page" style="display: none;">
+            <div class="page-content">
+                <div class="container">
+                    <h1 class="mb-4">Books Collection</h1>
+                    
+                    <!-- Search and Filter Bar -->
+                    <div class="search-bar mb-4">
+                        <div class="row">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <input type="text" class="form-control" id="book-search" placeholder="Search by title, author or ISBN...">
+                            </div>
+                            <div class="col-md-3 mb-3 mb-md-0">
+                                <select class="form-select" id="genre-filter">
+                                    <option value="">All Genres</option>
+                                    <option value="Fiction">Fiction</option>
+                                    <option value="Non-Fiction">Non-Fiction</option>
+                                    <option value="Mystery">Mystery</option>
+                                    <option value="Science Fiction">Science Fiction</option>
+                                    <option value="Fantasy">Fantasy</option>
+                                    <option value="Biography">Biography</option>
+                                    <option value="History">History</option>
+                                    <option value="Self-Help">Self-Help</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select" id="availability-filter">
+                                    <option value="">All Books</option>
+                                    <option value="available">Available</option>
+                                    <option value="borrowed">Borrowed</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Books List -->
+                    <div id="books-list">
+                        <!-- Books will be loaded here -->
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <nav aria-label="Books pagination" class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Dashboard Page -->
+        <div id="dashboard-page" style="display: none;">
+            <div class="page-content">
+                <div class="container">
+                    <h1 class="mb-4">User Dashboard</h1>
+                    
+                    <div class="row">
+                        <!-- User Profile -->
+                        <div class="col-lg-4 mb-4">
+                            <div class="user-card text-center">
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="user-avatar mb-3">
+                                <h3 class="mb-1">Jane Doe</h3>
+                                <p class="text-muted">Member since: January 2023</p>
+                                <div class="d-grid gap-2 mt-3">
+                                    <button class="btn btn-outline-primary">Edit Profile</button>
+                                </div>
+                            </div>
+                            
+                            <div class="user-card">
+                                <h4 class="mb-3">Membership Details</h4>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Member ID
+                                        <span class="badge bg-primary rounded-pill">LIB92830</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Membership Type
+                                        <span class="badge bg-success rounded-pill">Premium</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Books Borrowed
+                                        <span class="badge bg-secondary rounded-pill">3</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Due Fines
+                                        <span class="badge bg-danger rounded-pill">$0.00</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Dashboard Main Content -->
+                        <div class="col-lg-8">
+                            <!-- Tabs -->
+                            <ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="borrowed-tab" data-bs-toggle="tab" data-bs-target="#borrowed" type="button" role="tab">Borrowed Books</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab">Borrowing History</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="reserved-tab" data-bs-toggle="tab" data-bs-target="#reserved" type="button" role="tab">Reserved Books</button>
+                                </li>
+                            </ul>
+                            
+                            <!-- Tab Contents -->
+                            <div class="tab-content" id="dashboardTabContent">
+                                <!-- Borrowed Books Tab -->
+                                <div class="tab-pane fade show active" id="borrowed" role="tabpanel" aria-labelledby="borrowed-tab">
+                                    <h4 class="mb-3">Currently Borrowed Books</h4>
+                                    <div id="currently-borrowed">
+                                        <!-- Borrowed books will be loaded here -->
+                                    </div>
+                                </div>
+                                
+                                <!-- History Tab -->
+                                <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+                                    <h4 class="mb-3">Your Borrowing History</h4>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Book Title</th>
+                                                    <th>Borrowed Date</th>
+                                                    <th>Returned Date</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>The Great Gatsby</td>
+                                                    <td>Jan 10, 2023</td>
+                                                    <td>Jan 24, 2023</td>
+                                                    <td><span class="badge bg-success">Returned</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>To Kill a Mockingbird</td>
+                                                    <td>Feb 5, 2023</td>
+                                                    <td>Feb 19, 2023</td>
+                                                    <td><span class="badge bg-success">Returned</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1984</td>
+                                                    <td>Mar 15, 2023</td>
+                                                    <td>Mar 29, 2023</td>
+                                                    <td><span class="badge bg-success">Returned</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Pride and Prejudice</td>
+                                                    <td>Apr 2, 2023</td>
+                                                    <td>Apr 16, 2023</td>
+                                                    <td><span class="badge bg-success">Returned</span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- Reserved Books Tab -->
+                                <div class="tab-pane fade" id="reserved" role="tabpanel" aria-labelledby="reserved-tab">
+                                    <h4 class="mb-3">Your Reserved Books</h4>
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        You don't have any reserved books at the moment.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>LibraryMS</h5>
+                    <p>A modern library management system to help you discover and manage your reading experience.</p>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">Home</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Books</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Dashboard</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">About Us</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contact Us</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-map-marker-alt me-2"></i> 123 Library St, Book City</li>
+                        <li><i class="fas fa-phone me-2"></i> (123) 456-7890</li>
+                        <li><i class="fas fa-envelope me-2"></i> info@libraryms.com</li>
+                    </ul>
+                    <div class="mt-3">
+                        <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-4 bg-light">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2023 LibraryMS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sample data - in a real app this would come from a backend
+        const books = [
+            {
+                id: 1,
+                title: "To Kill a Mockingbird",
+                author: "Harper Lee",
+                cover: "https://images-na.ssl-images-amazon.com/images/I/71FxgtFKcQL.jpg",
+                genres: ["Fiction", "Classic"],
+                isbn: "9780061120084",
+                publishedYear: 1960,
+                status: "available",
+                description: "The unforgettable novel of a childhood in a sleepy Southern town and the crisis of conscience that rocked it."
+            },
+            {
+                id: 2,
+                title: "1984",
+                author: "George Orwell",
+                cover: "https://images-na.ssl-images-amazon.com/images/I/71kxa1-0mfL.jpg",
+                genres: ["Fiction", "Dystopian"],
+                isbn: "9780451524935",
+                publishedYear: 1949,
+                status: "borrowed",
+                description: "A dystopian novel set in Airstrip One, a province of the superstate Oceania in a world of perpetual war."
+            },
+            {
+                id: 3,
+                title: "The Great Gatsby",
+                author: "F. Scott Fitzgerald",
+                cover: "https://images-na.ssl-images-amazon.com/images/I/71FTb9X6wsL.jpg",
+                genres: ["Fiction", "Classic"],
+                isbn: "9780743273565",
+                publishedYear: 1925,
+                status: "available",
+                description: "The story of eccentric millionaire Jay Gatsby as told by Nick Carraway, a Midwesterner who lives on Long Island."
+            },
+            {
+                id: 4,
+                title: "Sapiens: A Brief History of Humankind",
+                author: "Yuval Noah Harari",
+                cover: "https://images-na.ssl-images-amazon.com/images/I/71Vl2zKJWZL.jpg",
+                genres: ["Non-Fiction", "History"],
+                isbn: "9780062316097",
+                publishedYear: 2014,
+                status: "available",
+                description: "A book that explores the history of the human species from the emergence of Homo sapiens to the present day."
+            },
+            {
+                id: 5,
+                title: "The Hobbit",
+                author: "J.R.R. Tolkien",
+                cover: "https://images-na.ssl-images-amazon.com/images/I/710+HcoP38L.jpg",
+                genres: ["Fiction", "Fantasy"],
+                isbn: "9780547928227",
+                publishedYear: 1937,
+                status: "borrowed",
+                description: "The journey of Bilbo Baggins, who is convinced by the wizard Gandalf to accompany thirteen dwarves on a quest."
+            },
+            {
+                id: 6,
+                title: "Pride and Prejudice",
+                author: "Jane Austen",
+                cover: "https://images-na.ssl-images-amazon.com/images/I/71Q1tPupKjL.jpg",
+                genres: ["Fiction", "Classic", "Romance"],
+                isbn: "9780141439518",
+                publishedYear: 1813,
+                status: "available",
+                description: "The story follows the main character Elizabeth Bennet as she deals with issues of manners, upbringing, morality, education, and marriage."
+            }
+        ];
+
+        const borrowedBooks = [
+            {
+                id: 2,
+                borrowDate: new Date(2023, 4, 15),
+                returnDate: new Date(2023, 4, 29)
+            },
+            {
+                id: 5,
+                borrowDate: new Date(2023, 4, 10),
+                returnDate: new Date(2023, 4, 24)
+            }
+        ];
+
+        // Initialize app and handle page navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize data in localStorage if it doesn't exist
+            if (!localStorage.getItem('books')) {
+                localStorage.setItem('books', JSON.stringify(books));
+            }
+            
+            if (!localStorage.getItem('borrowedBooks')) {
+                localStorage.setItem('borrowedBooks', JSON.stringify(borrowedBooks));
+            }
+            
+            // Load featured books
+            loadFeaturedBooks();
+            
+            // Navigation event listeners
+            document.getElementById('home-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showPage('home-page');
+            });
+            
+            document.getElementById('books-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showPage('books-page');
+                loadAllBooks();
+            });
+            
+            document.getElementById('dashboard-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showPage('dashboard-page');
+                loadBorrowedBooks();
+            });
+            
+            document.getElementById('explore-books-btn').addEventListener('click', function() {
+                showPage('books-page');
+                loadAllBooks();
+            });
+            
+            document.getElementById('view-all-books').addEventListener('click', function(e) {
+                e.preventDefault();
+                showPage('books-page');
+                loadAllBooks();
+            });
+            
+            // Book search and filter functionality
+            document.getElementById('book-search').addEventListener('input', function() {
+                filterBooks();
+            });
+            
+            document.getElementById('genre-filter').addEventListener('change', function() {
+                filterBooks();
+            });
+            
+            document.getElementById('availability-filter').addEventListener('change', function() {
+                filterBooks();
+            });
+        });
+
+        // Show the selected page and hide others
+        function showPage(pageId) {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('books-page').style.display = 'none';
+            document.getElementById('dashboard-page').style.display = 'none';
+            
+            document.getElementById(pageId).style.display = 'block';
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            
+            if (pageId === 'home-page') {
+                document.getElementById('home-link').classList.add('active');
+            } else if (pageId === 'books-page') {
+                document.getElementById('books-link').classList.add('active');
+            } else if (pageId === 'dashboard-page') {
+                document.getElementById('dashboard-link').classList.add('active');
+            }
+        }
+
+        // Load featured books (3 random books) on home page
+        function loadFeaturedBooks() {
+            const storedBooks = JSON.parse(localStorage.getItem('books'));
+            const featuredBooks = [...storedBooks].sort(() => 0.5 - Math.random()).slice(0, 3);
+            
+            const container = document.getElementById('featured-books-container');
+            container.innerHTML = '';
+            
+            featuredBooks.forEach(book => {
+                const bookCard = `
+                    <div class="col-md-4">
+                        <div class="book-card">
+                            <img src="${book.cover}" alt="${book.title}" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="book-title">${book.title}</h5>
+                                <p class="book-author">by ${book.author}</p>
+                                <p class="mb-2">${book.description.substring(0, 100)}...</p>
+                                <span class="book-status ${book.status}">
+                                    ${book.status === 'available' ? 'Available' : 'Borrowed'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += bookCard;
+            });
+        }
+
+        // Load all books on books page
+        function loadAllBooks() {
+            const storedBooks = JSON.parse(localStorage.getItem('books'));
+            const booksList = document.getElementById('books-list');
+            booksList.innerHTML = '';
+            
+            storedBooks.forEach(book => {
+                const bookItem = `
+                    <div class="book-list-item" data-id="${book.id}" data-title="${book.title}" data-author="${book.author}" data-isbn="${book.isbn}" data-status="${book.status}" data-genres="${book.genres.join(',')}">
+                        <div class="row">
+                            <div class="col-md-2 mb-3 mb-md-0">
+                                <img src="${book.cover}" alt="${book.title}" class="img-fluid rounded">
+                            </div>
+                            <div class="col-md-8 mb-3 mb-md-0">
+                                <h4>${book.title}</h4>
+                                <p class="text-muted">by ${book.author} (${book.publishedYear})</p>
+                                <p>${book.description.substring(0, 150)}...</p>
+                                <div>
+                                    ${book.genres.map(genre => `<span class="book-genre">${genre}</span>`).join('')}
+                                </div>
+                            </div>
+                            <div class="col-md-2 text-md-end">
+                                <span class="book-status ${book.status} d-block mb-3">
+                                    ${book.status === 'available' ? 'Available' : 'Borrowed'}
+                                </span>
+                                <button class="btn ${book.status === 'available' ? 'btn-primary' : 'btn-secondary'} btn-sm" 
+                                        ${book.status === 'available' ? '' : 'disabled'}>
+                                    ${book.status === 'available' ? 'Borrow' : 'Not Available'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                booksList.innerHTML += bookItem;
+            });
+            
+            // Add event listeners to borrow buttons
+            document.querySelectorAll('.book-list-item .btn-primary').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const bookItem = e.target.closest('.book-list-item');
+                    const bookId = parseInt(bookItem.dataset.id);
+                    borrowBook(bookId);
+                });
+            });
+        }
+
+        // Filter books based on search and filters
+        function filterBooks() {
+            const searchTerm = document.getElementById('book-search').value.toLowerCase();
+            const genreFilter = document.getElementById('genre-filter').value;
+            const availabilityFilter = document.getElementById('availability-filter').value;
+            
+            const bookItems = document.querySelectorAll('.book-list-item');
+            
+            bookItems.forEach(item => {
+                const title = item.dataset.title.toLowerCase();
+                const author = item.dataset.author.toLowerCase();
+                const isbn = item.dataset.isbn.toLowerCase();
+                const status = item.dataset.status;
+                const genres = item.dataset.genres.split(',');
+                
+                let showItem = true;
+                
+                // Search filter
+                if (searchTerm && !(title.includes(searchTerm) || author.includes(searchTerm) || isbn.includes(searchTerm))) {
+                    showItem = false;
+                }
+                
+                // Genre filter
+                if (genreFilter && !genres.includes(genreFilter)) {
+                    showItem = false;
+                }
+                
+                // Availability filter
+                if (availabilityFilter && status !== availabilityFilter) {
+                    showItem = false;
+                }
+                
+                item.style.display = showItem ? 'block' : 'none';
+            });
+        }
+
+        // Borrow a book
+        function borrowBook(bookId) {
+            const storedBooks = JSON.parse(localStorage.getItem('books'));
+            const storedBorrowedBooks = JSON.parse(localStorage.getItem('borrowedBooks'));
+            
+            // Find the book and update its status
+            const bookIndex = storedBooks.findIndex(book => book.id === bookId);
+            if (bookIndex !== -1 && storedBooks[bookIndex].status === 'available') {
+                storedBooks[bookIndex].status = 'borrowed';
+                
+                // Add to borrowed books
+                const borrowDate = new Date();
+                const returnDate = new Date();
+                returnDate.setDate(returnDate.getDate() + 14); // 2 weeks loan period
+                
+                storedBorrowedBooks.push({
+                    id: bookId,
+                    borrowDate: borrowDate,
+                    returnDate: returnDate
+                });
+                
+                // Update localStorage
+                localStorage.setItem('books', JSON.stringify(storedBooks));
+                localStorage.setItem('borrowedBooks', JSON.stringify(storedBorrowedBooks));
+                
+                // Reload books list
+                loadAllBooks();
+                
+                alert('Book borrowed successfully. It is due back in 2 weeks.');
+            }
+        }
+
+        // Load borrowed books on dashboard
+        function loadBorrowedBooks() {
+            const storedBooks = JSON.parse(localStorage.getItem('books'));
+            const storedBorrowedBooks = JSON.parse(localStorage.getItem('borrowedBooks'));
+            
+            const borrowedContainer = document.getElementById('currently-borrowed');
+            borrowedContainer.innerHTML = '';
+            
+            if (storedBorrowedBooks.length === 0) {
+                borrowedContainer.innerHTML = `
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        You haven't borrowed any books yet.
+                    </div>
+                `;
+                return;
+            }
+            
+            storedBorrowedBooks.forEach(borrowed => {
+                const book = storedBooks.find(b => b.id === borrowed.id);
+                if (book) {
+                    const today = new Date();
+                    const returnDate = new Date(borrowed.returnDate);
+                    const daysLeft = Math.ceil((returnDate - today) / (1000 * 60 * 60 * 24));
+                    
+                    const borrowedItem = `
+                        <div class="borrowed-book">
+                            <img src="${book.cover}" alt="${book.title}" class="borrowed-book-cover">
+                            <div class="flex-grow-1">
+                                <h5 class="mb-1">${book.title}</h5>
+                                <p class="text-muted mb-1">by ${book.author}</p>
+                                <p class="mb-0">
+                                    <strong>Borrowed:</strong> ${new Date(borrowed.borrowDate).toLocaleDateString()}
+                                </p>
+                                <p class="mb-0 ${daysLeft <= 3 ? 'return-date' : daysLeft <= 7 ? 'soon-return' : ''}">
+                                    <strong>Return by:</strong> ${returnDate.toLocaleDateString()} 
+                                    (${daysLeft} days left)
+                                </p>
+                            </div>
+                            <button class="btn btn-success btn-sm return-btn" data-id="${book.id}">Return</button>
+                        </div>
+                    `;
+                    borrowedContainer.innerHTML += borrowedItem;
+                }
+            });
+            
+            // Add event listeners to return buttons
+            document.querySelectorAll('.return-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const bookId = parseInt(e.target.dataset.id);
+                    returnBook(bookId);
+                });
+            });
+        }
+
+        // Return a borrowed book
+        function returnBook(bookId) {
+            const storedBooks = JSON.parse(localStorage.getItem('books'));
+            const storedBorrowedBooks = JSON.parse(localStorage.getItem('borrowedBooks'));
+            
+            // Find the book and update its status
+            const bookIndex = storedBooks.findIndex(book => book.id === bookId);
+            const borrowedIndex = storedBorrowedBooks.findIndex(item => item.id === bookId);
+            
+            if (bookIndex !== -1 && borrowedIndex !== -1) {
+                storedBooks[bookIndex].status = 'available';
+                storedBorrowedBooks.splice(borrowedIndex, 1);
+                
+                // Update localStorage
+                localStorage.setItem('books', JSON.stringify(storedBooks));
+                localStorage.setItem('borrowedBooks', JSON.stringify(storedBorrowedBooks));
+                
+                // Reload borrowed books
+                loadBorrowedBooks();
+                
+                alert('Book returned successfully. Thank you!');
+            }
+        }
+    </script>
+</body>
+</html>

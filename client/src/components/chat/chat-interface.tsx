@@ -72,6 +72,12 @@ export function ChatInterface({
     isFullstack?: boolean;
     isRunning: boolean;
   } | null>(null);
+  
+  // Add state for local server
+  const [localServer, setLocalServer] = useState<{
+    serverId: string;
+    serverUrl: string;
+  } | null>(null);
 
   // Get all sessions
   const { data: sessions = [], isLoading: isLoadingSessions } = useQuery<ChatSession[]>({
@@ -207,15 +213,61 @@ export function ChatInterface({
     }
   });
 
+// This function should replace the executeGeneratedCode in chat-interface.tsx
+
 const executeGeneratedCode = async (generatedCode: string) => {
   try {
     window.console.log('[ChatInterface] executeGeneratedCode called, code length:', generatedCode.length);
-    window.console.log('[ChatInterface] Current hasAutoOpenedGlobal value:', hasAutoOpenedGlobal);
     
-    const codeType = generatedCode.includes('document') || 
-                     generatedCode.includes('<html') || 
-                     generatedCode.includes('window.') ? 'web' : 'node';
+    // Check if this looks like a multi-page or website application
+    const isWebsite = 
+      (generatedCode.includes('<a href') && generatedCode.includes('html')) ||
+      generatedCode.includes('<nav') ||
+      generatedCode.includes('<header') && generatedCode.includes('<footer');
     
+    if (isWebsite) {
+      window.console.log('[ChatInterface] Detected website - creating local server');
+      
+      // For websites, use the direct server approach
+      const response = await fetch("/api/create-website", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ html: generatedCode })
+      });
+      
+      const result = await response.json();
+      
+      if (result.success && result.url) {
+        window.console.log('[ChatInterface] Website server created at:', result.url);
+        
+        // Store the project ID for cleanup later
+        const projectId = result.projectId;
+        
+        // Update output with server info
+        onOutputChange(`Website running at: ${result.url}`);
+        
+        // Store the original code
+        onWebOutputChange(generatedCode);
+        
+        // Open the URL in a new tab
+        window.open(result.url, '_blank');
+        
+        // Signal code execution is complete
+        setTimeout(() => {
+          setIsGeneratingCode(false);
+          onGeneratingChange(false);
+        }, 500);
+        
+        toast({
+          title: "Website created successfully",
+          description: `Your website is running at ${result.url}`
+        });
+        
+        return;
+      }
+    }
+    
+    // For regular code snippets, use the standard approach
     const response = await fetch("/api/execute", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -223,11 +275,6 @@ const executeGeneratedCode = async (generatedCode: string) => {
     });
     
     const result = await response.json();
-    window.console.log('[ChatInterface] Execute result:', {
-      hasOutput: !!result.output,
-      hasWebOutput: !!result.webOutput,
-      hasPreviewUrl: !!result.previewUrl
-    });
     
     if (result.output) {
       onOutputChange(result.output);
@@ -236,18 +283,11 @@ const executeGeneratedCode = async (generatedCode: string) => {
     if (result.webOutput) {
       onWebOutputChange(result.webOutput);
       
-      // Only auto-open if this is the first time for this generation
-      if (!hasAutoOpenedGlobal) {
-        window.console.log('[ChatInterface] Auto-opening preview in new tab');
-        setTimeout(() => {
-          const previewUrl = result.previewUrl || `data:text/html;charset=utf-8,${encodeURIComponent(result.webOutput)}`;
-          window.open(previewUrl, '_blank', 'noopener,noreferrer');
-          // Mark as opened
-          hasAutoOpenedGlobal = true;
-        }, 100);
-      } else {
-        window.console.log('[ChatInterface] Skipping auto-open because hasAutoOpenedGlobal is true');
-      }
+      // Open in new tab
+      setTimeout(() => {
+        const previewUrl = result.previewUrl || `data:text/html;charset=utf-8,${encodeURIComponent(result.webOutput)}`;
+        window.open(previewUrl, '_blank');
+      }, 100);
     }
     
     // Signal code execution is complete
@@ -256,10 +296,6 @@ const executeGeneratedCode = async (generatedCode: string) => {
       onGeneratingChange(false);
     }, 500);
     
-    // If there was an error, try to fix it automatically
-    if (result.error) {
-      fixCodeError(generatedCode, result.error);
-    }
   } catch (error) {
     window.console.error('[ChatInterface] Error executing code:', error);
     setIsGeneratingCode(false);
@@ -343,6 +379,11 @@ const executeGeneratedCode = async (generatedCode: string) => {
       
       // Reset fullstack project if any
       setFullstackProject(null);
+      
+      // Stop and cleanup local server if one exists
+      if (localServer) {
+        stopLocalServer();
+      }
     },
     onError: (error: Error) => {
       console.error("Error clearing session:", error);
@@ -377,6 +418,11 @@ const executeGeneratedCode = async (generatedCode: string) => {
       
       // Reset fullstack project if any
       setFullstackProject(null);
+      
+      // Stop and cleanup local server if one exists
+      if (localServer) {
+        stopLocalServer();
+      }
     },
     onError: (error: Error) => {
       console.error("Error deleting session:", error);
@@ -387,6 +433,30 @@ const executeGeneratedCode = async (generatedCode: string) => {
       });
     }
   });
+  
+  // Function to stop and cleanup local server
+  const stopLocalServer = async () => {
+    if (!localServer) return;
+    
+    try {
+      // Stop the server first
+      await fetch("/api/stop-local-server", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ serverId: localServer.serverId })
+      });
+      
+      // Then clean it up
+      await fetch(`/api/cleanup-local-server/${localServer.serverId}`, {
+        method: "DELETE"
+      });
+      
+      // Reset state
+      setLocalServer(null);
+    } catch (error) {
+      console.error("Error stopping local server:", error);
+    }
+  };
 
   // Function to detect fullstack or multi-page application request
   const isFullstackOrMultiPageRequest = (query: string): boolean => {
@@ -697,6 +767,35 @@ You can view the file structure, server logs, and other details in the tabs belo
                 <span className="text-sm font-medium">{generationProgress}%</span>
               </div>
               <Progress value={generationProgress} />
+            </div>
+          )}
+          
+          {localServer && (
+            <div className="mt-4 border rounded-md p-4">
+              <h3 className="text-lg font-semibold mb-2">Multi-page Web Application</h3>
+              <p className="mb-2">Your application is running on a local server:</p>
+              <div className="bg-muted p-3 rounded mb-3 flex justify-between items-center">
+                <a href={localServer.serverUrl} target="_blank" rel="noopener noreferrer" 
+                   className="text-blue-500 hover:underline text-sm">
+                  {localServer.serverUrl}
+                </a>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  onClick={() => window.open(localServer.serverUrl, '_blank')}
+                >
+                  Open
+                </Button>
+              </div>
+              <div className="flex justify-end">
+                <Button 
+                  variant="destructive" 
+                  size="sm" 
+                  onClick={stopLocalServer}
+                >
+                  Stop Server
+                </Button>
+              </div>
             </div>
           )}
           

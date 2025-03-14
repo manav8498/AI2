@@ -36,15 +36,9 @@ export function CodeSandbox({
   const [isRunning, setIsRunning] = useState(false);
   const [activeTab, setActiveTab] = useState<string>("preview");
   const [previewUrl, setPreviewUrl] = useState<string>("");
+  const [localServerUrl, setLocalServerUrl] = useState<string>("");
   const codeEditorRef = useRef<HTMLTextAreaElement>(null);
   const { toast } = useToast();
-
-  // Add direct console.log outside any hooks or functions - this should always appear
-  if (typeof window !== 'undefined') {
-    // This will run on the client side
-    window.console.log('[DIRECT LOG] CodeSandbox render with webOutput length:', webOutput?.length || 0);
-    window.console.log('[DIRECT LOG] Current HAS_AUTO_OPENED_GLOBAL value:', HAS_AUTO_OPENED_GLOBAL);
-  }
 
   // Update local code when initialCode changes
   useEffect(() => {
@@ -75,8 +69,18 @@ export function CodeSandbox({
         }
       }
 
-      // Then execute the code
-      return apiRequest("POST", "/api/execute", { code });
+      // Check if this is multi-page content by looking for navigation between pages
+      const isMultiPageContent = 
+        code.includes('<a href="') && 
+        (code.includes('.html"') || code.includes('index.html"'));
+
+      // If this is multi-page content, we need to use the local server approach
+      if (isMultiPageContent) {
+        return apiRequest("POST", "/api/setup-local-server", { code });
+      } else {
+        // Regular single-page execution
+        return apiRequest("POST", "/api/execute", { code });
+      }
     },
     onSuccess: async (response) => {
       window.console.log('[executeCode] Execution successful');
@@ -85,7 +89,8 @@ export function CodeSandbox({
       window.console.log('[executeCode] Response data:', {
         hasOutput: !!result.output, 
         hasWebOutput: !!result.webOutput,
-        hasPreviewUrl: !!result.previewUrl
+        hasPreviewUrl: !!result.previewUrl,
+        hasLocalServerUrl: !!result.localServerUrl
       });
       
       // Update state with results
@@ -93,7 +98,13 @@ export function CodeSandbox({
         onOutputChange(result.output);
       }
       
-      if (result.webOutput) {
+      if (result.localServerUrl) {
+        // For local server hosting (multi-page apps)
+        setLocalServerUrl(result.localServerUrl);
+        setPreviewUrl(result.localServerUrl);
+        setActiveTab("preview");
+      } else if (result.webOutput) {
+        // For single-page apps
         onWebOutputChange(result.webOutput);
         
         if (result.previewUrl) {
@@ -117,7 +128,9 @@ export function CodeSandbox({
       
       toast({
         title: "Code executed successfully",
-        description: result.webOutput ? "Preview is available" : "Check the console output",
+        description: result.localServerUrl 
+          ? "Your application is running on a local server" 
+          : (result.webOutput ? "Preview is available" : "Check the console output"),
       });
     },
     onError: async (error) => {
@@ -188,12 +201,29 @@ export function CodeSandbox({
   const handleStop = () => {
     window.console.log('[handleStop] Stopping execution');
     setIsRunning(false);
+    
+    // If we have a local server running, stop it
+    if (localServerUrl) {
+      apiRequest("POST", "/api/stop-local-server", {})
+        .then(() => {
+          setLocalServerUrl("");
+          toast({
+            title: "Server stopped",
+            description: "The local server has been stopped",
+          });
+        })
+        .catch(error => {
+          console.error("Error stopping server:", error);
+        });
+    }
   };
 
   const openPreview = () => {
     window.console.log('[openPreview] Opening preview manually');
     
-    if (webOutput) {
+    if (localServerUrl) {
+      window.open(localServerUrl, '_blank', 'noopener,noreferrer');
+    } else if (webOutput) {
       if (previewUrl) {
         window.open(previewUrl, '_blank', 'noopener,noreferrer');
       } else {
@@ -264,7 +294,7 @@ export function CodeSandbox({
                 variant="outline"
                 size="sm"
                 onClick={openPreview}
-                disabled={!webOutput}
+                disabled={!webOutput && !localServerUrl}
                 className="ml-2 focus:ring-0 flex gap-1.5"
               >
                 <ExternalLink className="h-4 w-4" />
@@ -273,11 +303,27 @@ export function CodeSandbox({
             </div>
 
             <TabsContent value="preview" className="flex-1 p-4 h-full">
-              {webOutput ? (
+              {localServerUrl ? (
+                <div className="flex flex-col h-full">
+                  <div className="bg-muted p-2 rounded mb-2 text-sm">
+                    <p>Your application is running on a local server:</p>
+                    <a href={localServerUrl} target="_blank" rel="noopener noreferrer" 
+                       className="text-blue-500 hover:underline break-all">
+                      {localServerUrl}
+                    </a>
+                  </div>
+                  <iframe
+                    src={localServerUrl}
+                    className="w-full flex-1 border rounded-md"
+                    sandbox="allow-scripts allow-same-origin allow-forms allow-modals"
+                    style={{ minHeight: "400px" }}
+                  />
+                </div>
+              ) : webOutput ? (
                 <iframe
                   srcDoc={webOutput}
                   className="w-full h-full border-0 rounded-md"
-                  sandbox="allow-scripts allow-same-origin"
+                  sandbox="allow-scripts allow-same-origin allow-forms"
                   style={{ minHeight: "500px" }}
                 />
               ) : (

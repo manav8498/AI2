@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Delights Bakery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #f8b26a;
+            --secondary-color: #e67e22;
+            --accent-color: #8d4925;
+            --light-color: #fff9f0;
+            --dark-color: #2c1810;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            overflow-x: hidden;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Header styles */
+        header {
+            background-color: var(--primary-color);
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--dark-color);
+            text-decoration: none;
+        }
+
+        .logo i {
+            color: var(--accent-color);
+        }
+
+        .logo:hover i {
+            animation: spin 1s ease;
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark-color);
+            cursor: pointer;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav a:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        nav a.active {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background-color: white;
+            border-radius: 3px;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.3rem;
+            margin-left: 1rem;
+            transition: var(--transition);
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--accent-color);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        /* Main content area */
+        main {
+            min-height: calc(100vh - 160px);
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--accent-color);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+        }
+
+        /* Home page */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: var(--transition);
+        }
+
+        .hero-image:hover {
+            transform: scale(1.02);
+        }
+
+        .hero-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 2rem;
+            border-radius: 0 0 15px 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: var(--dark-color);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-block;
+            text-decoration: none;
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature i {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature h3 {
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        /* Testimonials carousel */
+        .testimonials {
+            margin: 4rem 0;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .testimonials h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--accent-color);
+        }
+
+        .testimonial-carousel {
+            position: relative;
+            overflow: hidden;
+            height: 200px;
+        }
+
+        .testimonial-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .testimonial-slide.active {
+            opacity: 1;
+        }
+
+        .testimonial-quote {
+            font-style: italic;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .testimonial-quote::before,
+        .testimonial-quote::after {
+            content: '"';
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .testimonial-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .testimonial-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ddd;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .testimonial-dot.active {
+            background-color: var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        /* Menu page */
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: white;
+            border: 2px solid var(--primary-color);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            color: var(--dark-color);
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .product:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image-container {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .product:hover .product-image {
+            transform: scale(1.1);
+        }
+
+        .product-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            font-weight: bold;
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: var(--dark-color);
+            border: none;
+            padding: 0.8rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .add-to-cart:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .add-to-cart i {
+            transition: var(--transition);
+        }
+
+        .add-to-cart:hover i {
+            transform: translateX(5px);
+        }
+
+        /* Cart page */
+        .cart-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .cart-empty i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 1rem;
+        }
+
+        .cart-empty p {
+            font-size: 1.2rem;
+            color: #888;
+            margin-bottom: 2rem;
+        }
+
+        .cart-items {
+            margin-bottom: 2rem;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 100px 1fr auto;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .cart-item-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .cart-item-details h3 {
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .cart-item-price {
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quantity-btn {
+            background-color: #f0f0f0;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .quantity-btn:hover {
+            background-color: var(--primary-color);
+        }
+
+        .item-quantity {
+            font-weight: bold;
+            margin: 0 0.5rem;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .remove-item {
+            background-color: #ffeeee;
+            color: #ff4444;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-left: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .remove-item:hover {
+            background-color: #ff4444;
+            color: white;
+        }
+
+        .cart-summary {
+            background-color: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .summary-row.total {
+            font-weight: bold;
+            font-size: 1.3rem;
+            padding-top: 1rem;
+            border-top: 2px dashed #ddd;
+            color: var(--accent-color);
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        /* About page */
+        .about-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .about-image {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            height: 400px;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .about-content h2 {
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .about-content h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .timeline {
+            margin: 3rem 0;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background-color: var(--primary-color);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 30px;
+            position: relative;
+            margin-bottom: 2rem;
+            width: 50%;
+        }
+
+        .timeline-item:nth-child(even) {
+            align-self: flex-end;
+            justify-content: flex-start;
+            padding-right: 0;
+            padding-left: 30px;
+            margin-left: 50%;
+        }
+
+        .timeline-content {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-date {
+            position: absolute;
+            top: -10px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-date {
+            right: 10px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-date {
+            left: 10px;
+        }
+
+        .timeline-content h3 {
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .team-section {
+            margin: 4rem 0;
+        }
+
+        .team-members {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .team-member {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-member-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .team-member-info {
+            padding: 1.5rem;
+        }
+
+        .team-member-name {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .team-member-role {
+            color: var(--secondary-color);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .team-member-bio {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 36px;
+            height: 36px;
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .contact-form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-top: 3rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--accent-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(248, 178, 106, 0.3);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .toast {
+            background-color: white;
+            color: var(--dark-color);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideInRight 0.3s ease-out;
+            transition: var(--transition);
+            max-width: 300px;
+        }
+
+        .toast.success {
+            border-left: 4px solid #2ecc71;
+        }
+
+        .toast.error {
+            border-left: 4px solid #e74c3c;
+        }
+
+        .toast i {
+            font-size: 1.2rem;
+        }
+
+        .toast.success i {
+            color: #2ecc71;
+        }
+
+        .toast.error i {
+            color: #e74c3c;
+        }
+
+        .toast-message {
+            flex: 1;
+        }
+
+        .close-toast {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #999;
+            transition: var(--transition);
+        }
+
+        .close-toast:hover {
+            color: var(--dark-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: left;
+        }
+
+        .footer-column h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .footer-column p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .footer-links a i {
+            font-size: 0.8rem;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .footer-social a {
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-social a:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -300px;
+                width: 300px;
+                height: 100vh;
+                background-color: white;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                transition: var(--transition);
+                z-index: 1000;
+                padding: 2rem;
+                overflow-y: auto;
+            }
+
+            .nav-menu.active {
+                right: 0;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+                z-index: 999;
+            }
+
+            .overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .close-menu {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                color: var(--dark-color);
+            }
+
+            .about-section {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 50px;
+                padding-right: 0;
+                justify-content: flex-start;
+            }
+
+            .timeline-item:nth-child(even) {
+                margin-left: 0;
+                padding-left: 50px;
+            }
+
+            .timeline-date {
+                top: -10px;
+                left: 10px !important;
+                right: auto !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .cart-item {
+                grid-template-columns: 80px 1fr;
+            }
+
+            .cart-item-actions {
+                grid-column: span 2;
+                justify-content: flex-end;
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="#" class="logo" data-page="home">
+            <i class="fas fa-cookie-bite"></i>
+            <span>Sweet Delights</span>
+        </a>
+        <button class="nav-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav class="nav-menu">
+            <button class="close-menu">
+                <i class="fas fa-times"></i>
+            </button>
+            <ul>
+                <li><a href="#" class="active" data-page="home">Home</a></li>
+                <li><a href="#" data-page="menu">Menu</a></li>
+                <li><a href="#" data-page="about">About Us</a></li>
+                <li><a href="#" data-page="cart" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="overlay"></div>
+
+    <main id="content-container">
+        <!-- Content will be loaded dynamically -->
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>About Sweet Delights</h3>
+                <p>We are passionate about baking the most delicious treats using only the finest ingredients and traditional recipes passed down through generations.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#" data-page="home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="#" data-page="menu"><i class="fas fa-chevron-right"></i> Our Menu</a></li>
+                    <li><a href="#" data-page="about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                    <li><a href="#" data-page="cart"><i class="fas fa-chevron-right"></i> Your Cart</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Opening Hours</h3>
+                <ul class="footer-links">
+                    <li><strong>Monday - Friday:</strong> 7:00 AM - 8:00 PM</li>
+                    <li><strong>Saturday:</strong> 8:00 AM - 9:00 PM</li>
+                    <li><strong>Sunday:</strong> 9:00 AM - 6:00 PM</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Bakery Street, Flour City</li>
+                    <li><i class="fas fa-phone"></i> (555) 123-4567</li>
+                    <li><i class="fas fa-envelope"></i> info@sweetdelights.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2023 Sweet Delights Bakery. All rights reserved.
+        </div>
+    </footer>
+
+    <div class="toast-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // App state
+            const state = {
+                cart: JSON.parse(localStorage.getItem('cart')) || [],
+                activePage: 'home',
+                activeFilter: 'all',
+                currentTestimonial: 0
+            };
+
+            // Products data
+            const products = [
+                {
+                    id: 1,
+                    name: "Chocolate Croissant",
+                    description: "Buttery, flaky croissant filled with rich chocolate.",
+                    price: 3.99,
+                    image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                    category: "pastries",
+                    tag: "Bestseller"
+                },
+                {
+                    id: 2,
+                    name: "Vanilla Cupcake",
+                    description: "Moist vanilla cupcake topped with buttercream frosting.",
+                    price: 2.99,
+                    image: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                    category: "cupcakes"
+                },
+                {
+                    id: 3,
+                    name: "Sourdough Bread",
+                    description: "Artisan sourdough bread with a crispy crust and soft interior.",
+                    price: 5.99,
+                    image: "https://images.unsplash.com/photo-1585478259715-1c093a7b70d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                    category: "bread",
+                    tag: "New"
+                },
+                {
+                    id: 4,
+                    name: "Blueberry Muffin",
+                    description: "Moist muffin packed with juicy blueberries.",
+                    price: 2.49,
+                    image: "https://images.unsplash.com/photo-1587830687469-44a9186d521c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                    category: "muffins"
+                },
+                {
+                    id: 5,
+                    name: "Strawberry Tart",
+                    description: "Buttery tart shell filled with custard and topped with fresh strawberries.",
+                    price: 4.99,
+                    image: "https://images.unsplash.com/photo-1488477304112-4944851de03d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                    category: "desserts"
+                },
+                {
+                    id: 6,
+                    name: "Chocolate Chip Cookie",
+                    description: "Classic cookie filled with chocolate chips.",
+                    price: 1.99,
+                    image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                    category: "cookies",
+                    tag: "Popular"
+                },
+                {
+                    id: 7,
+                    name: "Cinnamon Roll",
+                    description: "Soft, swirled pastry with cinnamon and topped with cream cheese frosting.",
+                    price: 3.49,
+                    image: "https://images.unsplash.com/photo-1583530015230-61c0a5b68e77?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                    category: "pastries"
+                },
+                {
+                    id: 8,
+                    name: "Baguette",
+                    description: "Traditional French bread with a crispy crust and light, airy interior.",
+                    price: 3.99,
+                    image: "https://images.unsplash.com/photo-1597079910443-60c437a0d366?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+                    category: "bread"
+                }
+            ];
+
+            // Testimonials data
+            const testimonials = [
+                {
+                    quote: "The pastries here are absolutely divine! I've never tasted such wonderful croissants outside of Paris.",
+                    author: "Emily Thompson"
+                },
+                {
+                    quote: "Sweet Delights has been my go-to bakery for years. Their sourdough bread is simply unmatched in quality and taste.",
+                    author: "Michael Rodriguez"
+                },
+                {
+                    quote: "I ordered a custom cake for my daughter's birthday and it exceeded all my expectations. Not only was it beautiful, but it tasted amazing too!",
+                    author: "Sarah Johnson"
+                }
+            ];
+
+            // DOM elements
+            const contentContainer = document.getElementById('content-container');
+            const navLinks = document.querySelectorAll('nav a');
+            const navToggle = document.querySelector('.nav-toggle');
+            const closeMenu = document.querySelector('.close-menu');
+            const navMenu = document.querySelector('.nav-menu');
+            const overlay = document.querySelector('.overlay');
+            const cartCount = document.querySelector('.cart-count');
+
+            // Initialize app
+            updateCartCount();
+            loadPage(state.activePage);
+
+            // Event listeners
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.getAttribute('data-page');
+                    loadPage(page);
+                    closeNavMenu();
+                });
+            });
+
+            navToggle.addEventListener('click', openNavMenu);
+            closeMenu.addEventListener('click', closeNavMenu);
+            overlay.addEventListener('click', closeNavMenu);
+
+            document.querySelectorAll('.footer-links a[data-page]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.getAttribute('data-page');
+                    loadPage(page);
+                    window.scrollTo(0, 0);
+                });
+            });
+
+            // Functions
+            function loadPage(page) {
+                state.activePage = page;
+                
+                // Update active nav link
+                navLinks.forEach(link => {
+                    if (link.getAttribute('data-page') === page) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+
+                // Fade out current content
+                contentContainer.style.opacity = '0';
+                
+                // After fade out, load new content
+                setTimeout(() => {
+                    switch(page) {
+                        case 'home':
+                            renderHomePage();
+                            break;
+                        case 'menu':
+                            renderMenuPage();
+                            break;
+                        case 'cart':
+                            renderCartPage();
+                            break;
+                        case 'about':
+                            renderAboutPage();
+                            break;
+                        default:
+                            renderHomePage();
+                    }
+                    
+                    // Fade in new content
+                    contentContainer.style.opacity = '1';
+                }, 300);
+            }
+
+            function renderHomePage() {
+                contentContainer.innerHTML = `
+                    <section class="hero">
+                        <img src="https://images.unsplash.com/photo-1517433367423-c7e5b0f35086?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Bakery Display" class="hero-image">
+                        <div class="hero-content">
+                            <h2>Welcome to Sweet Delights Bakery</h2>
+                            <p>Where every bite tells a story of passion, tradition, and the finest ingredients.</p>
+                            <a href="#" class="btn btn-accent" data-page="menu">Explore Our Menu</a>
+                        </div>
+                    </section>
+
+                    <section class="features">
+                        <div class="feature">
+                            <i class="fas fa-cookie"></i>
+                            <h3>Fresh Daily</h3>
+                            <p>All our products are baked fresh every morning to ensure the highest quality.</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-leaf"></i>
+                            <h3>Organic Ingredients</h3>
+                            <p>We use only the finest organic ingredients sourced from local farmers.</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-truck"></i>
+                            <h3>Fast Delivery</h3>
+                            <p>Enjoy our bakery items delivered fresh to your doorstep within the city.</p>
+                        </div>
+                    </section>
+
+                    <section class="testimonials">
+                        <h2>What Our Customers Say</h2>
+                        <div class="testimonial-carousel">
+                            ${testimonials.map((testimonial, index) => `
+                                <div class="testimonial-slide ${index === 0 ? 'active' : ''}">
+                                    <p class="testimonial-quote">${testimonial.quote}</p>
+                                    <p class="testimonial-author">- ${testimonial.author}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="testimonial-dots">
+                            ${testimonials.map((_, index) => `
+                                <div class="testimonial-dot ${index === 0 ? 'active' : ''}" data-index="${index}"></div>
+                            `).join('')}
+                        </div>
+                    </section>
+                `;
+
+                document.querySelector('a[data-page="menu"]').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    loadPage('menu');
+                });
+
+                // Set up testimonial carousel
+                const dots = document.querySelectorAll('.testimonial-dot');
+                dots.forEach(dot => {
+                    dot.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        changeTestimonial(index);
+                    });
+                });
+
+                // Auto-advance testimonials
+                let testimonialInterval = setInterval(() => {
+                    const nextIndex = (state.currentTestimonial + 1) % testimonials.length;
+                    changeTestimonial(nextIndex);
+                }, 5000);
+
+                function changeTestimonial(index) {
+                    const slides = document.querySelectorAll('.testimonial-slide');
+                    const dots = document.querySelectorAll('.testimonial-dot');
+
+                    slides[state.currentTestimonial].classList.remove('active');
+                    dots[state.currentTestimonial].classList.remove('active');
+
+                    state.currentTestimonial = index;
+
+                    slides[state.currentTestimonial].classList.add('active');
+                    dots[state.currentTestimonial].classList.add('active');
+                }
+
+                // Clear interval when page changes
+                return function cleanup() {
+                    clearInterval(testimonialInterval);
+                };
+            }
+
+            function renderMenuPage() {
+                // Get unique categories
+                const categories = ['all', ...new Set(products.map(product => product.category))];
+
+                contentContainer.innerHTML = `
+                    <h1 class="page-title">Our Menu</h1>
+                    
+                    <div class="category-filter">
+                        ${categories.map(category => `
+                            <button class="filter-btn ${category === state.activeFilter ? 'active' : ''}" 
+                                    data-category="${category}">
+                                ${category.charAt(0).toUpperCase() + category.slice(1)}
+                            </button>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="products">
+                        ${getFilteredProducts().map(product => `
+                            <div class="product" data-id="${product.id}" data-category="${product.category}">
+                                <div class="product-image-container">
+                                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                                    ${product.tag ? `<span class="product-tag">${product.tag}</span>` : ''}
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-name">${product.name}</h3>
+                                    <p class="product-description">${product.description}</p>
+                                    <p class="product-price">$${product.price.toFixed(2)}</p>
+                                    <button class="add-to-cart" data-id="${product.id}">
+                                        Add to Cart <i class="fas fa-shopping-cart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+
+                // Add event listeners to filter buttons
+                document.querySelectorAll('.filter-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const category = this.getAttribute('data-category');
+                        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+                        state.activeFilter = category;
+                        
+                        const productElements = document.querySelectorAll('.product');
+                        if (category === 'all') {
+                            productElements.forEach(product => {
+                                product.style.display = 'block';
+                                setTimeout(() => {
+                                    product.style.opacity = '1';
+                                }, 10);
+                            });
+                        } else {
+                            productElements.forEach(product => {
+                                if (product.getAttribute('data-category') === category) {
+                                    product.style.display = 'block';
+                                    setTimeout(() => {
+                                        product.style.opacity = '1';
+                                    }, 10);
+                                } else {
+                                    product.style.opacity = '0';
+                                    setTimeout(() => {
+                                        product.style.display = 'none';
+                                    }, 300);
+                                }
+                            });
+                        }
+                    });
+                });
+
+                // Add event listeners to add-to-cart buttons
+                document.querySelectorAll('.add-to-cart').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productId = parseInt(this.getAttribute('data-id'));
+                        addToCart(productId);
+                        
+                        // Add animation to the button
+                        this.innerHTML = 'Added! <i class="fas fa-check"></i>';
+                        this.style.backgroundColor = '#2ecc71';
+                        this.style.color = 'white';
+                        
+                        setTimeout(() => {
+                            this.innerHTML = 'Add to Cart <i class="fas fa-shopping-cart"></i>';
+                            this.style.backgroundColor = '';
+                            this.style.color = '';
+                        }, 1500);
+                    });
+                });
+
+                function getFilteredProducts() {
+                    if (state.activeFilter === 'all') {
+                        return products;
+                    } else {
+                        return products.filter(product => product.category === state.activeFilter);
+                    }
+                }
+            }
+
+            function renderCartPage() {
+                if (state.cart.length === 0) {
+                    contentContainer.innerHTML = `
+                        <h1 class="page-title">Your Cart</h1>
+                        <div class="cart-container">
+                            <div class="cart-empty">
+                                <i class="fas fa-shopping-cart"></i>
+                                <p>Your cart is empty</p>
+                                <a href="#" class="btn" data-page="menu">Browse Menu</a>
+                            </div>
+                        </div>
+                    `;
+
+                    document.querySelector('a[data-page="menu"]').addEventListener('click', function(e) {
+                        e.preventDefault();
+                        loadPage('menu');
+                    });
+                    
+                    return;
+                }
+
+                // Calculate cart totals
+                const subtotal = state.cart.reduce((total, item) => {
+                    const product = getProductById(item.id);
+                    return total + (product.price * item.quantity);
+                }, 0);
+                
+                const tax = subtotal * 0.08; // 8% tax
+                const total = subtotal + tax;
+
+                contentContainer.innerHTML = `
+                    <h1 class="page-title">Your Cart</h1>
+                    <div class="cart-container">
+                        <div class="cart-items">
+                            ${state.cart.map(item => {
+                                const product = getProductById(item.id);
+                                return `
+                                    <div class="cart-item" data-id="${item.id}">
+                                        <img src="${product.image}" alt="${product.name}" class="cart-item-image">
+                                        <div class="cart-item-details">
+                                            <h3>${product.name}</h3>
+                                            <p class="cart-item-price">$${(product.price * item.quantity).toFixed(2)}</p>
+                                        </div>
+                                        <div class="cart-item-actions">
+                                            <button class="quantity-btn decrease" data-id="${item.id}">-</button>
+                                            <span class="item-quantity">${item.quantity}</span>
+                                            <button class="quantity-btn increase" data-id="${item.id}">+</button>
+                                            <button class="remove-item" data-id="${item.id}">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                        <div class="cart-summary">
+                            <div class="summary-row">
+                                <span>Subtotal:</span>
+                                <span>$${subtotal.toFixed(2)}</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Tax (8%):</span>
+                                <span>$${tax.toFixed(2)}</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total:</span>
+                                <span>$${total.toFixed(2)}</span>
+                            </div>
+                            <button class="btn btn-accent checkout-btn">Proceed to Checkout</button>
+                        </div>
+                    </div>
+                `;
+
+                // Add event listeners to quantity buttons
+                document.querySelectorAll('.quantity-btn.decrease').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productId = parseInt(this.getAttribute('data-id'));
+                        updateCartItemQuantity(productId, -1);
+                    });
+                });
+
+                document.querySelectorAll('.quantity-btn.increase').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productId = parseInt(this.getAttribute('data-id'));
+                        updateCartItemQuantity(productId, 1);
+                    });
+                });
+
+                // Add event listeners to remove buttons
+                document.querySelectorAll('.remove-item').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productId = parseInt(this.getAttribute('data-id'));
+                        removeFromCart(productId);
+                    });
+                });
+
+                // Add event listener to checkout button
+                document.querySelector('.checkout-btn').addEventListener('click', function() {
+                    showToast('Order placed successfully! Thank you for your purchase.', 'success');
+                    state.cart = [];
+                    saveCart();
+                    updateCartCount();
+                    renderCartPage();
+                });
+            }
+
+            function renderAboutPage() {
+                contentContainer.innerHTML = `
+                    <h1 class="page-title">About Sweet Delights</h1>
+                    
+                    <section class="about-section">
+                        <div class="about-image">
+                            <img src="https://images.unsplash.com/photo-1556741533-6e6a62bd8b49?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Bakery Interior">
+                        </div>
+                        <div class="about-content">
+                            <h2>Our Story</h2>
+                            <p>Sweet Delights Bakery was founded in 2005 by master baker Maria Johnson with a simple mission: to bring joy through exceptional baked goods made with love and the finest ingredients.</p>
+                            <p>What started as a small corner shop has grown into a beloved community institution, but our commitment to quality and tradition remains unchanged. Each morning, our bakers arrive before dawn to prepare the day's offerings, ensuring that everything is fresh and perfect for our customers.</p>
+                            <p>We believe that baking is both an art and a science, requiring precision, creativity, and passion. Our recipes have been perfected over years of experimentation and many have been passed down through generations.</p>
+                        </div>
+                    </section>
+                    
+                    <section class="timeline">
+                        <h2 class="page-title">Our Journey</h2>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <span class="timeline-date">2005</span>
+                                <h3>The Beginning</h3>
+                                <p>Maria Johnson opens the first Sweet Delights location in a small storefront with just three employees.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <span class="timeline-date">2008</span>
+                                <h3>Award Winning</h3>
+                                <p>Our signature sourdough bread wins "Best Artisan Bread" at the Regional Baking Championship.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <span class="timeline-date">2012</span>
+                                <h3>Expansion</h3>
+                                <p>Due to popular demand, we open our second location across town and expand our menu to include more vegan and gluten-free options.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <span class="timeline-date">2017</span>
+                                <h3>Giving Back</h3>
+                                <p>We launch our "Sweet Community" program, donating unsold baked goods to local shelters and food banks every day.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <span class="timeline-date">Today</span>
+                                <h3>Looking Forward</h3>
+                                <p>With three thriving locations and a dedicated team of 30 employees, we continue to innovate while honoring traditional baking methods.</p>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section class="team-section">
+                        <h2 class="page-title">Meet Our Team</h2>
+                        <div class="team-members">
+                            <div class="team-member">
+                                <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Maria Johnson" class="team-member-image">
+                                <div class="team-member-info">
+                                    <h3 class="team-member-name">Maria Johnson</h3>
+                                    <p class="team-member-role">Founder & Head Baker</p>
+                                    <p class="team-member-bio">With over 25 years of baking experience, Maria oversees all recipes and ensures quality standards are met.</p>
+                                    <div class="social-links">
+                                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="team-member">
+                                <img src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="David Chen" class="team-member-image">
+                                <div class="team-member-info">
+                                    <h3 class="team-member-name">David Chen</h3>
+                                    <p class="team-member-role">Pastry Chef</p>
+                                    <p class="team-member-bio">A culinary school graduate with a flair for creating beautiful and delicious pastries that delight our customers.</p>
+                                    <div class="social-links">
+                                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="team-member">
+                                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Sarah Kim" class="team-member-image">
+                                <div class="team-member-info">
+                                    <h3 class="team-member-name">Sarah Kim</h3>
+                                    <p class="team-member-role">Cake Designer</p>
+                                    <p class="team-member-bio">Sarah has a background in fine arts, which she brings to her stunning cake designs for special occasions.</p>
+                                    <div class="social-links">
+                                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="team-member">
+                                <img src="https://images.unsplash.com/photo-1545167622-3a6ac756afa4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="James Wilson" class="team-member-image">
+                                <div class="team-member-info">
+                                    <h3 class="team-member-name">James Wilson</h3>
+                                    <p class="team-member-role">Bread Baker</p>
+                                    <p class="team-member-bio">James specializes in artisan breads and has spent years perfecting our sourdough starter and traditional methods.</p>
+                                    <div class="social-links">
+                                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section class="contact-form">
+                        <h2 class="page-title">Get In Touch</h2>
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <label for="name">Your Name</label>
+                                <input type="text" id="name" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" class="form-control" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-accent">Send Message</button>
+                        </form>
+                    </section>
+                `;
+
+                // Add event listener to contact form
+                document.getElementById('contactForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    showToast('Your message has been sent! We\'ll get back to you soon.', 'success');
+                    this.reset();
+                });
+            }
+
+            function addToCart(productId) {
+                const existingItem = state.cart.find(item => item.id === productId);
+                
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    state.cart.push({
+                        id: productId,
+                        quantity: 1
+                    });
+                }
+                
+                saveCart();
+                updateCartCount();
+                showToast('Item added to cart!', 'success');
+            }
+
+            function updateCartItemQuantity(productId, change) {
+                const item = state.cart.find(item => item.id === productId);
+                
+                if (item) {
+                    item.quantity += change;
+                    
+                    if (item.quantity <= 0) {
+                        removeFromCart(productId);
+                        return;
+                    }
+                    
+                    saveCart();
+                    updateCartCount();
+                    renderCartPage();
+                }
+            }
+
+            function removeFromCart(productId) {
+                const product = getProductById(productId);
+                const itemElement = document.querySelector(`.cart-item[data-id="${productId}"]`);
+                
+                // Animate item removal
+                if (itemElement) {
+                    itemElement.style.transition = 'all 0.3s ease';
+                    itemElement.style.transform = 'translateX(100%)';
+                    itemElement.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        state.cart = state.cart.filter(item => item.id !== productId);
+                        saveCart();
+                        updateCartCount();
+                        renderCartPage();
+                        showToast(`${product.name} removed from cart`, 'error');
+                    }, 300);
+                } else {
+                    state.cart = state.cart.filter(item => item.id !== productId);
+                    saveCart();
+                    updateCartCount();
+                    renderCartPage();
+                    showToast(`Item removed from cart`, 'error');
+                }
+            }
+
+            function getProductById(id) {
+                return products.find(product => product.id === id);
+            }
+
+            function saveCart() {
+                localStorage.setItem('cart', JSON.stringify(state.cart));
+            }
+
+            function updateCartCount() {
+                const count = state.cart.reduce((total, item) => total + item.quantity, 0);
+                cartCount.textContent = count;
+                
+                // Animate count change
+                cartCount.style.transform = 'scale(1.3)';
+                setTimeout(() => {
+                    cartCount.style.transform = 'scale(1)';
+                }, 300);
+            }
+
+            function showToast(message, type = 'success') {
+                const toastContainer = document.querySelector('.toast-container');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span class="toast-message">${message}</span>
+                    <button class="close-toast">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                toastContainer.appendChild(toast);
+                
+                // Auto remove after 3 seconds
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 300);
+                }, 3000);
+                
+                // Add event listener to close button
+                toast.querySelector('.close-toast').addEventListener('click', function() {
+                    toast.style.opacity = '0';
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 300);
+                });
+            }
+
+            function openNavMenu() {
+                navMenu.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeNavMenu() {
+                navMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+</body>
+</html>

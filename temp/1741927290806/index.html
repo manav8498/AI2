@@ -1,0 +1,1129 @@
+<!-- index.html (Home Page) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookHaven - Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>BookHaven</h1>
+        </div>
+        <nav>
+            <ul>
+                <li class="active"><a href="index.html">Home</a></li>
+                <li><a href="catalog.html">Catalog</a></li>
+                <li><a href="cart.html">Cart <span id="cart-count">0</span></a></li>
+            </ul>
+        </nav>
+        <div class="mobile-nav-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Discover the World of Books</h2>
+                <p>Your journey through countless stories begins here.</p>
+                <a href="catalog.html" class="btn">Browse Books</a>
+            </div>
+        </section>
+
+        <section class="featured">
+            <h2>Featured Books</h2>
+            <div class="book-grid">
+                <div class="book-card">
+                    <img src="https://via.placeholder.com/150x220" alt="Book Cover">
+                    <h3>The Great Gatsby</h3>
+                    <p class="author">F. Scott Fitzgerald</p>
+                    <p class="price">$12.99</p>
+                    <button class="add-to-cart" data-id="1" data-title="The Great Gatsby" data-author="F. Scott Fitzgerald" data-price="12.99">Add to Cart</button>
+                </div>
+                <div class="book-card">
+                    <img src="https://via.placeholder.com/150x220" alt="Book Cover">
+                    <h3>To Kill a Mockingbird</h3>
+                    <p class="author">Harper Lee</p>
+                    <p class="price">$14.99</p>
+                    <button class="add-to-cart" data-id="2" data-title="To Kill a Mockingbird" data-author="Harper Lee" data-price="14.99">Add to Cart</button>
+                </div>
+                <div class="book-card">
+                    <img src="https://via.placeholder.com/150x220" alt="Book Cover">
+                    <h3>1984</h3>
+                    <p class="author">George Orwell</p>
+                    <p class="price">$11.99</p>
+                    <button class="add-to-cart" data-id="3" data-title="1984" data-author="George Orwell" data-price="11.99">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <h2>What Our Readers Say</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial">
+                    <p>"BookHaven has the best selection of books I've ever seen online. The delivery is fast and the quality is excellent."</p>
+                    <p class="customer">- Sarah J.</p>
+                </div>
+                <div class="testimonial">
+                    <p>"I've been a loyal customer for years. Their passion for books is evident in everything they do."</p>
+                    <p class="customer">- Michael T.</p>
+                </div>
+                <div class="testimonial">
+                    <p>"The recommendations are always spot on. I've discovered so many new authors thanks to BookHaven!"</p>
+                    <p class="customer">- Emma R.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>BookHaven</h3>
+                <p>Your trusted source for quality books since 2010.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="catalog.html">Catalog</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: info@bookhaven.com</p>
+                <p>Phone: (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 BookHaven. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+<!-- catalog.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookHaven - Catalog</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>BookHaven</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li class="active"><a href="catalog.html">Catalog</a></li>
+                <li><a href="cart.html">Cart <span id="cart-count">0</span></a></li>
+            </ul>
+        </nav>
+        <div class="mobile-nav-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <main>
+        <section class="catalog-header">
+            <h2>Book Catalog</h2>
+            <div class="filters">
+                <select id="genre-filter">
+                    <option value="all">All Genres</option>
+                    <option value="fiction">Fiction</option>
+                    <option value="non-fiction">Non-Fiction</option>
+                    <option value="mystery">Mystery</option>
+                    <option value="sci-fi">Science Fiction</option>
+                </select>
+                <select id="sort-filter">
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="title-asc">Title: A to Z</option>
+                    <option value="title-desc">Title: Z to A</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="catalog">
+            <div class="book-grid" id="book-catalog">
+                <!-- Books will be dynamically inserted here -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>BookHaven</h3>
+                <p>Your trusted source for quality books since 2010.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="catalog.html">Catalog</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: info@bookhaven.com</p>
+                <p>Phone: (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 BookHaven. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+<!-- cart.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookHaven - Cart</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>BookHaven</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="catalog.html">Catalog</a></li>
+                <li class="active"><a href="cart.html">Cart <span id="cart-count">0</span></a></li>
+            </ul>
+        </nav>
+        <div class="mobile-nav-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <main>
+        <section class="cart-section">
+            <h2>Your Shopping Cart</h2>
+            <div id="cart-container">
+                <div id="cart-items">
+                    <!-- Cart items will be dynamically inserted here -->
+                </div>
+                <div id="cart-summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-item">
+                        <span>Subtotal:</span>
+                        <span id="cart-subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Tax (8%):</span>
+                        <span id="cart-tax">$0.00</span>
+                    </div>
+                    <div class="summary-item total">
+                        <span>Total:</span>
+                        <span id="cart-total">$0.00</span>
+                    </div>
+                    <button id="checkout-btn" class="btn">Proceed to Checkout</button>
+                    <button id="clear-cart-btn" class="btn btn-secondary">Clear Cart</button>
+                </div>
+            </div>
+            <div id="empty-cart-message" style="display: none;">
+                <p>Your cart is empty. <a href="catalog.html">Continue shopping</a>.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>BookHaven</h3>
+                <p>Your trusted source for quality books since 2010.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="catalog.html">Catalog</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: info@bookhaven.com</p>
+                <p>Phone: (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 BookHaven. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+/* styles.css */
+/* Base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+}
+
+a {
+    text-decoration: none;
+    color: #3d5a80;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #3d5a80;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #2c3e50;
+}
+
+.btn-secondary {
+    background-color: #e63946;
+}
+
+.btn-secondary:hover {
+    background-color: #c1121f;
+}
+
+/* Header */
+header {
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo h1 {
+    color: #3d5a80;
+    font-size: 1.8rem;
+}
+
+nav ul {
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 1.5rem;
+}
+
+nav ul li a {
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #3d5a80;
+}
+
+nav ul li.active a {
+    color: #3d5a80;
+    border-bottom: 2px solid #3d5a80;
+}
+
+.mobile-nav-toggle {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Hero Section */
+.hero {
+    height: 60vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.hero-content {
+    max-width: 800px;
+    padding: 0 2rem;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+/* Featured Books Section */
+.featured, .testimonials {
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.featured h2, .testimonials h2, .catalog-header h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #2c3e50;
+}
+
+.book-grid, .testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.book-card {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+}
+
+.book-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.book-card h3 {
+    padding: 1rem 1rem 0.5rem;
+    font-size: 1.2rem;
+}
+
+.book-card .author {
+    padding: 0 1rem;
+    color: #666;
+    font-style: italic;
+}
+
+.book-card .price {
+    padding: 0.5rem 1rem;
+    color: #3d5a80;
+    font-weight: bold;
+}
+
+.book-card button {
+    margin: 0.5rem 1rem 1rem;
+    background-color: #3d5a80;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.book-card button:hover {
+    background-color: #2c3e50;
+}
+
+/* Testimonials Section */
+.testimonial {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial p {
+    margin-bottom: 1rem;
+}
+
+.testimonial .customer {
+    text-align: right;
+    font-weight: bold;
+    color: #3d5a80;
+}
+
+/* Footer */
+footer {
+    background-color: #2c3e50;
+    color: white;
+    padding: 2rem 0 0;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.footer-section h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section a {
+    color: #a8dadc;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 2rem;
+    background-color: #1d2b3a;
+}
+
+/* Catalog Page */
+.catalog-header {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.filters {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.filters select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.catalog {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+}
+
+/* Cart Page */
+.cart-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+#cart-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.cart-item img {
+    width: 80px;
+    height: 120px;
+    object-fit: cover;
+}
+
+.cart-item-details h3 {
+    margin-bottom: 0.5rem;
+}
+
+.cart-item-details .author {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.cart-item-details .price {
+    color: #3d5a80;
+    font-weight: bold;
+}
+
+.cart-item-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-controls button {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    height: 30px;
+    width: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.quantity-controls input {
+    width: 40px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-left: none;
+    border-right: none;
+}
+
+.remove-item {
+    background-color: #e63946;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.remove-item:hover {
+    background-color: #c1121f;
+}
+
+#cart-summary {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    height: fit-content;
+}
+
+#cart-summary h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.summary-item.total {
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-top: 1px solid #ddd;
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+#checkout-btn, #clear-cart-btn {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+#empty-cart-message {
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.2rem;
+}
+
+#empty-cart-message a {
+    color: #3d5a80;
+    font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .mobile-nav-toggle {
+        display: block;
+    }
+
+    nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background-color: white;
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s ease;
+        z-index: 1000;
+    }
+
+    nav.active {
+        right: 0;
+    }
+
+    nav ul {
+        flex-direction: column;
+        padding: 2rem;
+    }
+
+    nav ul li {
+        margin: 1rem 0;
+    }
+
+    .hero {
+        height: 50vh;
+    }
+
+    .hero h2 {
+        font-size: 2rem;
+    }
+
+    #cart-container {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-item {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-item img {
+        width: 100%;
+        height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h2 {
+        font-size: 1.5rem;
+    }
+
+    .book-grid, .testimonial-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+// script.js
+document.addEventListener('DOMContentLoaded', function() {
+    // Mobile navigation toggle
+    const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+    const nav = document.querySelector('nav');
+    
+    if (mobileNavToggle) {
+        mobileNavToggle.addEventListener('click', function() {
+            nav.classList.toggle('active');
+        });
+    }
+
+    // Initialize cart from localStorage
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    updateCartCount();
+
+    // Add to cart functionality for all pages
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            const title = this.getAttribute('data-title');
+            const author = this.getAttribute('data-author');
+            const price = parseFloat(this.getAttribute('data-price'));
+            
+            addToCart(id, title, author, price);
+            
+            // Show confirmation message
+            const confirmMessage = document.createElement('div');
+            confirmMessage.classList.add('add-confirmation');
+            confirmMessage.textContent = `Added "${title}" to your cart!`;
+            document.body.appendChild(confirmMessage);
+            
+            setTimeout(() => {
+                confirmMessage.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(confirmMessage);
+                }, 300);
+            }, 2000);
+        });
+    });
+
+    // Populate catalog page with books
+    if (window.location.pathname.includes('catalog.html')) {
+        populateCatalog();
+        setupFilters();
+    }
+
+    // Render cart page
+    if (window.location.pathname.includes('cart.html')) {
+        renderCart();
+        
+        // Setup checkout button
+        const checkoutBtn = document.getElementById('checkout-btn');
+        if (checkoutBtn) {
+            checkoutBtn.addEventListener('click', function() {
+                alert('Thank you for your order! This would proceed to checkout in a real application.');
+            });
+        }
+        
+        // Setup clear cart button
+        const clearCartBtn = document.getElementById('clear-cart-btn');
+        if (clearCartBtn) {
+            clearCartBtn.addEventListener('click', function() {
+                clearCart();
+            });
+        }
+    }
+
+    // Helper functions
+    function addToCart(id, title, author, price) {
+        const existingItem = cart.find(item => item.id === id);
+        
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({
+                id,
+                title,
+                author,
+                price,
+                quantity: 1,
+                imageUrl: 'https://via.placeholder.com/150x220'
+            });
+        }
+        
+        saveCart();
+        updateCartCount();
+    }
+
+    function removeFromCart(id) {
+        cart = cart.filter(item => item.id !== id);
+        saveCart();
+        updateCartCount();
+        if (window.location.pathname.includes('cart.html')) {
+            renderCart();
+        }
+    }
+
+    function updateItemQuantity(id, newQuantity) {
+        const item = cart.find(item => item.id === id);
+        if (item) {
+            item.quantity = Math.max(1, newQuantity);
+            saveCart();
+            updateCartCount();
+            if (window.location.pathname.includes('cart.html')) {
+                renderCart();
+            }
+        }
+    }
+
+    function clearCart() {
+        cart = [];
+        saveCart();
+        updateCartCount();
+        renderCart();
+    }
+
+    function saveCart() {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    function updateCartCount() {
+        const cartCountElements = document.querySelectorAll('#cart-count');
+        const itemCount = cart.reduce((total, item) => total + item.quantity, 0);
+        
+        cartCountElements.forEach(element => {
+            element.textContent = itemCount;
+        });
+    }
+
+    function renderCart() {
+        const cartItems = document.getElementById('cart-items');
+        const cartContainer = document.getElementById('cart-container');
+        const emptyCartMessage = document.getElementById('empty-cart-message');
+        
+        if (cart.length === 0) {
+            cartContainer.style.display = 'none';
+            emptyCartMessage.style.display = 'block';
+            return;
+        }
+        
+        cartContainer.style.display = 'grid';
+        emptyCartMessage.style.display = 'none';
+        
+        // Clear previous items
+        cartItems.innerHTML = '';
+        
+        // Add each cart item
+        cart.forEach(item => {
+            const cartItemElement = document.createElement('div');
+            cartItemElement.classList.add('cart-item');
+            cartItemElement.innerHTML = `
+                <img src="${item.imageUrl}" alt="${item.title}">
+                <div class="cart-item-details">
+                    <h3>${item.title}</h3>
+                    <p class="author">by ${item.author}</p>
+                    <p class="price">$${item.price.toFixed(2)}</p>
+                </div>
+                <div class="cart-item-actions">
+                    <div class="quantity-controls">
+                        <button class="decrease-quantity" data-id="${item.id}">-</button>
+                        <input type="number" value="${item.quantity}" min="1" class="item-quantity" data-id="${item.id}">
+                        <button class="increase-quantity" data-id="${item.id}">+</button>
+                    </div>
+                    <button class="remove-item" data-id="${item.id}">Remove</button>
+                </div>
+            `;
+            
+            cartItems.appendChild(cartItemElement);
+        });
+        
+        // Add event listeners to cart item buttons
+        document.querySelectorAll('.decrease-quantity').forEach(button => {
+            button.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const item = cart.find(item => item.id === id);
+                if (item && item.quantity > 1) {
+                    updateItemQuantity(id, item.quantity - 1);
+                }
+            });
+        });
+        
+        document.querySelectorAll('.increase-quantity').forEach(button => {
+            button.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const item = cart.find(item => item.id === id);
+                if (item) {
+                    updateItemQuantity(id, item.quantity + 1);
+                }
+            });
+        });
+        
+        document.querySelectorAll('.item-quantity').forEach(input => {
+            input.addEventListener('change', function() {
+                const id = this.getAttribute('data-id');
+                const newQuantity = parseInt(this.value);
+                if (!isNaN(newQuantity) && newQuantity > 0) {
+                    updateItemQuantity(id, newQuantity);
+                } else {
+                    this.value = 1;
+                    updateItemQuantity(id, 1);
+                }
+            });
+        });
+        
+        document.querySelectorAll('.remove-item').forEach(button => {
+            button.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                removeFromCart(id);
+            });
+        });
+        
+        // Update cart summary
+        updateCartSummary();
+    }
+
+    function updateCartSummary() {
+        const subtotalElement = document.getElementById('cart-subtotal');
+        const taxElement = document.getElementById('cart-tax');
+        const totalElement = document.getElementById('cart-total');
+        
+        if (!subtotalElement || !taxElement || !totalElement) return;
+        
+        const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+        const tax = subtotal * 0.08; // 8% tax
+        const total = subtotal + tax;
+        
+        subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+        taxElement.textContent = `$${tax.toFixed(2)}`;
+        totalElement.textContent = `$${total.toFixed(2)}`;
+    }
+
+    function populateCatalog() {
+        const bookCatalog = document.getElementById('book-catalog');
+        if (!bookCatalog) return;
+        
+        // Sample book data
+        const books = [
+            { id: "1", title: "The Great Gatsby", author: "F. Scott Fitzgerald", price: 12.99, genre: "fiction", imageUrl: "https://via.placeholder.com/150x220" },
+            { id: "2", title: "To Kill a Mockingbird", author: "Harper Lee", price: 14.99, genre: "fiction", imageUrl: "https://via.placeholder.com/150x220" },
+            { id: "3", title: "1984", author: "George Orwell", price: 11.99, genre: "fiction", imageUrl: "https://via.placeholder.com/150x220" },
+            { id: "4", title: "Pride and Prejudice", author: "Jane Austen", price: 9.99, genre: "fiction", imageUrl: "https://via.placeholder.com/150x220" },
+            { id: "5", title: "The Catcher in the Rye", author: "J.D. Salinger", price: 10.99, genre: "fiction", imageUrl: "https://via.placeholder.com/150x220" },
+            { id: "6", title: "The Hobbit", author: "J.R.R. Tolkien", price: 15.99, genre: "fiction", imageUrl: "https://via.placeholder.com/150x220" },
+            { id: "7", title: "Sapiens: A Brief History of Humankind", author: "Yuval Noah Harari", price: 18.99, genre: "non-fiction", imageUrl: "https://via.placeholder.com/150x220" },
+            { id: "8", title: "Thinking, Fast and Slow", author: "Daniel Kahneman", price: 16.99, genre: "non-fiction", imageUrl: "https://via.placeholder.com/150x220" },
+            { id: "9", title: "The Girl on the Train", author: "Paula Hawkins", price: 13.99, genre: "mystery", imageUrl: "https://via.placeholder.com/150x220" },
+            { id: "10", title: "Dune", author: "Frank Herbert", price: 14.99, genre: "sci-fi", imageUrl: "https://via.placeholder.com/150x220" },
+            { id: "11", title: "The Martian", author: "Andy Weir", price: 13.99, genre: "sci-fi", imageUrl: "https://via.placeholder.com/150x220" },
+            { id: "12", title: "Gone Girl", author: "Gillian Flynn", price: 12.99, genre: "mystery", imageUrl: "https://via.placeholder.com/150x220" }
+        ];
+        
+        // Store books data for filtering
+        window.booksData = books;
+        
+        // Display all books
+        displayBooks(books);
+    }
+
+    function displayBooks(books) {
+        const bookCatalog = document.getElementById('book-catalog');
+        if (!bookCatalog) return;
+        
+        bookCatalog.innerHTML = '';
+        
+        if (books.length === 0) {
+            bookCatalog.innerHTML = '<p class="no-books">No books match your criteria.</p>';
+            return;
+        }
+        
+        books.forEach(book => {
+            const bookCard = document.createElement('div');
+            bookCard.classList.add('book-card');
+            bookCard.innerHTML = `
+                <img src="${book.imageUrl}" alt="${book.title}">
+                <h3>${book.title}</h3>
+                <p class="author">${book.author}</p>
+                <p class="price">$${book.price.toFixed(2)}</p>
+                <button class="add-to-cart" data-id="${book.id}" data-title="${book.title}" data-author="${book.author}" data-price="${book.price}">Add to Cart</button>
+            `;
+            bookCatalog.appendChild(bookCard);
+        });
+        
+        // Add click event to new add-to-cart buttons
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const title = this.getAttribute('data-title');
+                const author = this.getAttribute('data-author');
+                const price = parseFloat(this.getAttribute('data-price'));
+                
+                addToCart(id, title, author, price);
+                
+                // Show confirmation message
+                const confirmMessage = document.createElement('div');
+                confirmMessage.classList.add('add-confirmation');
+                confirmMessage.textContent = `Added "${title}" to your cart!`;
+                document.body.appendChild(confirmMessage);
+                
+                setTimeout(() => {
+                    confirmMessage.style.opacity = '0';
+                    setTimeout(() => {
+                        document.body.removeChild(confirmMessage);
+                    }, 300);
+                }, 2000);
+            });
+        });
+    }
+
+    function setupFilters() {
+        const genreFilter = document.getElementById('genre-filter');
+        const sortFilter = document.getElementById('sort-filter');
+        
+        if (genreFilter && sortFilter) {
+            genreFilter.addEventListener('change', applyFilters);
+            sortFilter.addEventListener('change', applyFilters);
+        }
+    }
+
+    function applyFilters() {
+        if (!window.booksData) return;
+        
+        const genreFilter = document.getElementById('genre-filter');
+        const sortFilter = document.getElementById('sort-filter');
+        
+        let filteredBooks = [...window.booksData];
+        
+        // Apply genre filter
+        if (genreFilter.value !== 'all') {
+            filteredBooks = filteredBooks.filter(book => book.genre === genreFilter.value);
+        }
+        
+        // Apply sort
+        switch (sortFilter.value) {
+            case 'price-asc':
+                filteredBooks.sort((a, b) => a.price - b.price);
+                break;
+            case 'price-desc':
+                filteredBooks.sort((a, b) => b.price - a.price);
+                break;
+            case 'title-asc':
+                filteredBooks.sort((a, b) => a.title.localeCompare(b.title));
+                break;
+            case 'title-desc':
+                filteredBooks.sort((a, b) => b.title.localeCompare(a.title));
+                break;
+        }
+        
+        displayBooks(filteredBooks);
+    }
+
+    // Add style for add confirmation
+    const style = document.createElement('style');
+    style.textContent = `
+        .add-confirmation {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #3d5a80;
+            color: white;
+            padding: 1rem;
+            border-radius: 4px;
+            z-index: 1000;
+            transition: opacity 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+    `;
+    document.head.appendChild(style);
+});

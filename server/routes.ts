@@ -18,6 +18,9 @@ import * as crypto from "crypto";
 import * as vm from "vm";
 import * as util from "util";
 
+// Import WebsiteServer functions using ES modules
+import { createWebsiteServer, stopWebsiteServer } from "./services/WebsiteServer";
+
 const execAsync = promisify(exec);
 
 // Import the ProjectManager
@@ -1254,6 +1257,166 @@ ${prompt}`;
       console.error("Error getting fullstack project status:", error);
       res.status(500).json({
         error: error instanceof Error ? error.message : "Failed to get project status"
+      });
+    }
+  });
+
+  // New endpoints for local server
+  app.post("/api/setup-local-server", async (req, res) => {
+    try {
+      const { code } = z.object({
+        code: z.string()
+      }).parse(req.body);
+      
+      // Import the LocalServerManager
+      const { LocalServerManager } = await import('./services/LocalServerManager');
+      const serverManager = LocalServerManager.getInstance();
+      
+      // Create the website from the code
+      const { serverId, serverUrl } = await serverManager.createWebsite(code);
+      
+      res.json({
+        serverId,
+        localServerUrl: serverUrl,
+        output: `Website running on local server: ${serverUrl}`,
+        message: "Server started successfully"
+      });
+    } catch (error) {
+      console.error("Error setting up local server:", error);
+      res.status(500).json({
+        error: error instanceof Error ? error.message : "Failed to set up local server",
+        output: `Error: ${error instanceof Error ? error.message : "Unknown error"}`
+      });
+    }
+  });
+
+  app.post("/api/stop-local-server", async (req, res) => {
+    try {
+      const { serverId } = z.object({
+        serverId: z.string().optional()
+      }).parse(req.body);
+      
+      // If no serverId is provided, nothing to do
+      if (!serverId) {
+        return res.json({ message: "No server ID provided" });
+      }
+      
+      // Import the LocalServerManager
+      const { LocalServerManager } = await import('./services/LocalServerManager');
+      const serverManager = LocalServerManager.getInstance();
+      
+      // Stop the server
+      const result = await serverManager.stopServer(serverId);
+      
+      if (result) {
+        res.json({ message: "Server stopped successfully" });
+      } else {
+        res.status(404).json({ error: "Server not found" });
+      }
+    } catch (error) {
+      console.error("Error stopping local server:", error);
+      res.status(500).json({
+        error: error instanceof Error ? error.message : "Failed to stop local server"
+      });
+    }
+  });
+
+  app.get("/api/local-server-status/:serverId", async (req, res) => {
+    try {
+      const { serverId } = req.params;
+      
+      // Import the LocalServerManager
+      const { LocalServerManager } = await import('./services/LocalServerManager');
+      const serverManager = LocalServerManager.getInstance();
+      
+      // Get server status
+      const status = serverManager.getServerStatus(serverId);
+      
+      if (status) {
+        res.json(status);
+      } else {
+        res.status(404).json({ error: "Server not found" });
+      }
+    } catch (error) {
+      console.error("Error getting local server status:", error);
+      res.status(500).json({
+        error: error instanceof Error ? error.message : "Failed to get server status"
+      });
+    }
+  });
+
+  app.delete("/api/cleanup-local-server/:serverId", async (req, res) => {
+    try {
+      const { serverId } = req.params;
+      
+      // Import the LocalServerManager
+      const { LocalServerManager } = await import('./services/LocalServerManager');
+      const serverManager = LocalServerManager.getInstance();
+      
+      // Clean up the server
+      const result = await serverManager.cleanupServer(serverId);
+      
+      if (result) {
+        res.json({ message: "Server cleaned up successfully" });
+      } else {
+        res.status(404).json({ error: "Server not found" });
+      }
+    } catch (error) {
+      console.error("Error cleaning up local server:", error);
+      res.status(500).json({
+        error: error instanceof Error ? error.message : "Failed to clean up server"
+      });
+    }
+  });
+
+  // Website server routes with ES module imports
+  app.post("/api/create-website", async (req, res) => {
+    try {
+      const { html } = req.body;
+      
+      if (!html) {
+        return res.status(400).json({ error: "HTML content is required" });
+      }
+      
+      // Create the website server using imported function
+      const server = createWebsiteServer(html);
+      
+      // Return server info
+      res.json({
+        success: true,
+        projectId: server.projectId,
+        url: server.url,
+        message: "Website server created successfully"
+      });
+    } catch (error) {
+      console.error("Error creating website server:", error);
+      res.status(500).json({
+        error: error instanceof Error ? error.message : "Failed to create website server"
+      });
+    }
+  });
+
+  app.post("/api/stop-website/:projectId", async (req, res) => {
+    try {
+      const { projectId } = req.params;
+      
+      // Stop the website server using imported function
+      const result = stopWebsiteServer(projectId);
+      
+      if (result) {
+        res.json({
+          success: true,
+          message: "Website server stopped successfully"
+        });
+      } else {
+        res.status(404).json({
+          error: "Website server not found"
+        });
+      }
+    } catch (error) {
+      console.error("Error stopping website server:", error);
+      res.status(500).json({
+        error: error instanceof Error ? error.message : "Failed to stop website server"
       });
     }
   });

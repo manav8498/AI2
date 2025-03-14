@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Delights Bakery</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #ffb6c1;
+            --primary-dark: #e6a0ab;
+            --secondary: #8b4513;
+            --accent: #ffe4e1;
+            --text: #331800;
+            --light-bg: #fff9f5;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--primary);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .active {
+            background-color: var(--primary-dark);
+            font-weight: bold;
+        }
+        
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.75rem;
+        }
+        
+        /* Mobile nav */
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: var(--secondary);
+            margin: 3px 0;
+            border-radius: 3px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('https://images.unsplash.com/photo-1608198093002-ad4e005484ec?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #6b3410;
+        }
+        
+        /* Featured Products */
+        .features {
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .feature-item {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .feature-content {
+            padding: 20px;
+        }
+        
+        .feature-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        
+        .price {
+            font-weight: bold;
+            color: var(--secondary);
+            margin: 10px 0;
+            font-size: 1.2rem;
+        }
+        
+        /* Menu Page */
+        .menu-section {
+            padding: 80px 0;
+        }
+        
+        .menu-categories {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .category-btn {
+            background-color: var(--accent);
+            color: var(--secondary);
+            border: none;
+            padding: 8px 20px;
+            margin: 0 10px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category-btn:hover {
+            background-color: var(--primary);
+        }
+        
+        .category-btn.active {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: var(--secondary);
+        }
+        
+        .product-info p {
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        
+        .product-price {
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .add-to-cart {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .add-to-cart:hover {
+            background-color: #6b3410;
+        }
+        
+        /* Cart Page */
+        .cart-section {
+            padding: 80px 0;
+        }
+        
+        .cart-empty {
+            text-align: center;
+            padding: 50px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .cart-empty h2 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+        
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .cart-table th {
+            background-color: var(--primary);
+            padding: 15px;
+            text-align: left;
+            color: var(--secondary);
+        }
+        
+        .cart-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        
+        .cart-product {
+            display: flex;
+            align-items: center;
+        }
+        
+        .cart-product-info {
+            margin-left: 15px;
+        }
+        
+        .cart-product-title {
+            font-weight: bold;
+            color: var(--secondary);
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+        }
+        
+        .quantity-btn {
+            background-color: var(--accent);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+        
+        .quantity-input {
+            width: 40px;
+            height: 30px;
+            text-align: center;
+            margin: 0 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .remove-btn {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .remove-btn:hover {
+            background-color: #e55151;
+        }
+        
+        .cart-total {
+            margin-top: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .cart-total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-total-row:last-child {
+            border-bottom: none;
+            font-weight: bold;
+        }
+        
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .checkout-btn:hover {
+            background-color: #6b3410;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #f1f1f1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--primary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: flex;
+            }
+            
+            nav ul {
+                position: absolute;
+                flex-direction: column;
+                background-color: var(--primary);
+                width: 100%;
+                top: 70px;
+                left: 0;
+                padding: 20px;
+                z-index: 100;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+                display: none;
+            }
+            
+            nav ul.show {
+                display: flex;
+            }
+            
+            nav ul li {
+                margin: 10px 0;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .cart-table thead {
+                display: none;
+            }
+            
+            .cart-table, .cart-table tbody, .cart-table tr, .cart-table td {
+                display: block;
+                width: 100%;
+            }
+            
+            .cart-table tr {
+                margin-bottom: 20px;
+                border-bottom: 2px solid #eee;
+            }
+            
+            .cart-table td {
+                text-align: right;
+                padding: 10px;
+                position: relative;
+                padding-left: 50%;
+            }
+            
+            .cart-table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                width: 45%;
+                font-weight: bold;
+                text-align: left;
+            }
+            
+            .cart-product {
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Sweet Delights</div>
+                <div class="mobile-toggle">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+                <nav>
+                    <ul id="nav-menu">
+                        <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+                        <li><a href="#" class="nav-link" data-page="menu">Menu</a></li>
+                        <li><a href="#" class="nav-link" data-page="cart">
+                            Cart <span class="cart-icon">🛒<span class="cart-count">0</span></span>
+                        </a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Content will be dynamically loaded here -->
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About Us</h3>
+                    <p>Sweet Delights Bakery has been serving fresh, delicious pastries since 1998. Our commitment to quality ingredients and traditional recipes makes us a favorite in the community.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#" data-page="home">Home</a></li>
+                        <li><a href="#" data-page="menu">Menu</a></li>
+                        <li><a href="#" data-page="cart">Cart</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <p>123 Bakery Street<br>Sweet Town, ST 12345</p>
+                    <p>Phone: (123) 456-7890<br>Email: info@sweetdelights.com</p>
+                    <div class="social-links">
+                        <a href="#" class="social-icon">FB</a>
+                        <a href="#" class="social-icon">IG</a>
+                        <a href="#" class="social-icon">TW</a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 Sweet Delights Bakery. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Product data
+        const products = [
+            {
+                id: 1,
+                name: 'Chocolate Cake',
+                description: 'Rich, moist chocolate cake with a smooth chocolate ganache.',
+                price: 32.99,
+                category: 'cakes',
+                image: 'https://images.unsplash.com/photo-1606890658317-7d14490b76fd?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80'
+            },
+            {
+                id: 2,
+                name: 'Vanilla Cupcakes',
+                description: 'Light and fluffy vanilla cupcakes topped with buttercream frosting.',
+                price: 3.50,
+                category: 'cupcakes',
+                image: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80'
+            },
+            {
+                id: 3,
+                name: 'Croissant',
+                description: 'Buttery, flaky pastry with a golden-brown crust.',
+                price: 2.99,
+                category: 'pastries',
+                image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80'
+            },
+            {
+                id: 4,
+                name: 'Sourdough Bread',
+                description: 'Artisan sourdough bread with a crispy crust and chewy interior.',
+                price: 6.50,
+                category: 'breads',
+                image: 'https://images.unsplash.com/photo-1585478259715-5c232f142c6f?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80'
+            },
+            {
+                id: 5,
+                name: 'Blueberry Muffin',
+                description: 'Moist muffin packed with fresh blueberries and topped with sugar.',
+                price: 2.75,
+                category: 'pastries',
+                image: 'https://images.unsplash.com/photo-1607958996333-41aef7caefaa?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80'
+            },
+            {
+                id: 6,
+                name: 'Red Velvet Cake',
+                description: 'Classic red velvet cake with cream cheese frosting.',
+                price: 35.99,
+                category: 'cakes',
+                image: 'https://images.unsplash.com/photo-1586788680434-30d324626f39?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80'
+            },
+            {
+                id: 7,
+                name: 'Chocolate Chip Cookies',
+                description: 'Fresh baked cookies with premium chocolate chips.',
+                price: 1.99,
+                category: 'cookies',
+                image: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80'
+            },
+            {
+                id: 8,
+                name: 'Cinnamon Roll',
+                description: 'Soft, gooey cinnamon roll with cream cheese icing.',
+                price: 3.99,
+                category: 'pastries',
+                image: 'https://images.unsplash.com/photo-1583865819922-cbfe0a51288e?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80'
+            },
+            {
+                id: 9,
+                name: 'Baguette',
+                description: 'Traditional French baguette with a crispy crust.',
+                price: 4.50,
+                category: 'breads',
+                image: 'https://images.unsplash.com/photo-1549931319-a545dcf3bc7c?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80'
+            },
+            {
+                id: 10,
+                name: 'Macaron Set',
+                description: 'Assorted flavors of delicate French macarons.',
+                price: 12.99,
+                category: 'cookies',
+                image: 'https://images.unsplash.com/photo-1569864358642-9d1684040f43?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80'
+            },
+            {
+                id: 11,
+                name: 'Strawberry Cheesecake',
+                description: 'Creamy cheesecake topped with fresh strawberry compote.',
+                price: 38.99,
+                category: 'cakes',
+                image: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80'
+            },
+            {
+                id: 12,
+                name: 'Chocolate Cupcakes',
+                description: 'Decadent chocolate cupcakes with chocolate buttercream.',
+                price: 3.50,
+                category: 'cupcakes',
+                image: 'https://images.unsplash.com/photo-1603532648955-039310d9ed75?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80'
+            }
+        ];
+
+        // Cart functionality
+        let cart = JSON.parse(localStorage.getItem('bakeryCart')) || [];
+        
+        // Update cart count
+        function updateCartCount() {
+            const cartCount = document.querySelector('.cart-count');
+            cartCount.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+        }
+        
+        // Add to cart function
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: 1
+                });
+            }
+            
+            // Save cart to localStorage
+            localStorage.setItem('bakeryCart', JSON.stringify(cart));
+            updateCartCount();
+            
+            // Show confirmation
+            alert(`${product.name} added to cart!`);
+        }
+        
+        // Remove from cart function
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            localStorage.setItem('bakeryCart', JSON.stringify(cart));
+            updateCartCount();
+            loadPage('cart');
+        }
+        
+        // Update quantity function
+        function updateQuantity(productId, newQuantity) {
+            const item = cart.find(item => item.id === productId);
+            
+            if (item) {
+                if (newQuantity <= 0) {
+                    removeFromCart(productId);
+                    return;
+                }
+                
+                item.quantity = newQuantity;
+                localStorage.setItem('bakeryCart', JSON.stringify(cart));
+                updateCartCount();
+                loadPage('cart');
+            }
+        }
+        
+        // Page content
+        function getHomeContent() {
+            const featuredProducts = products.slice(0, 3);
+            
+            let featuredHTML = '';
+            featuredProducts.forEach(product => {
+                featuredHTML += `
+                    <div class="feature-item">
+                        <img src="${product.image}" alt="${product.name}" class="feature-img">
+                        <div class="feature-content">
+                            <h3>${product.name}</h3>
+                            <p>${product.description}</p>
+                            <p class="price">$${product.price.toFixed(2)}</p>
+                            <button class="btn" onclick="addToCart(${product.id})">Add to Cart</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            return `
+                <section class="hero">
+                    <div class="container">
+                        <h1>Welcome to Sweet Delights Bakery</h1>
+                        <p>Discover our handcrafted pastries made with love and the finest ingredients</p>
+                        <a href="#" class="btn" data-page="menu">Explore Our Menu</a>
+                    </div>
+                </section>
+                
+                <section class="features">
+                    <div class="container">
+                        <h2 class="section-title">Featured Products</h2>
+                        <div class="feature-grid">
+                            ${featuredHTML}
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="features">
+                    <div class="container">
+                        <h2 class="section-title">Why Choose Us</h2>
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <img src="https://images.unsplash.com/photo-1514481538271-cf9f99627524?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Fresh Ingredients" class="feature-img">
+                                <div class="feature-content">
+                                    <h3>Fresh Ingredients</h3>
+                                    <p>We use only the freshest, highest quality ingredients in all our baked goods.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Handcrafted" class="feature-img">
+                                <div class="feature-content">
+                                    <h3>Handcrafted Daily</h3>
+                                    <p>All our products are baked fresh each morning for the best taste and quality.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" alt="Community" class="feature-img">
+                                <div class="feature-content">
+                                    <h3>Community First</h3>
+                                    <p>We're proud to be a part of this community and source locally whenever possible.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+        
+        function getMenuContent() {
+            const categories = [...new Set(products.map(p => p.category))];
+            
+            let categoriesHTML = '';
+            categories.forEach(category => {
+                categoriesHTML += `
+                    <button class="category-btn" data-category="${category}">
+                        ${category.charAt(0).toUpperCase() + category.slice(1)}
+                    </button>
+                `;
+            });
+            
+            let productsHTML = '';
+            products.forEach(product => {
+                productsHTML += `
+                    <div class="product-card" data-category="${product.category}">
+                        <img src="${product.image}" alt="${product.name}" class="product-img">
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p>${product.description}</p>
+                            <p class="product-price">$${product.price.toFixed(2)}</p>
+                            <button class="add-to-cart" onclick="addToCart(${product.id})">Add to Cart</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            return `
+                <section class="menu-section">
+                    <div class="container">
+                        <h2 class="section-title">Our Menu</h2>
+                        
+                        <div class="menu-categories">
+                            <button class="category-btn active" data-category="all">All Products</button>
+                            ${categoriesHTML}
+                        </div>
+                        
+                        <div class="product-grid">
+                            ${productsHTML}
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+        
+        function getCartContent() {
+            if (cart.length === 0) {
+                return `
+                    <section class="cart-section">
+                        <div class="container">
+                            <h2 class="section-title">Your Cart</h2>
+                            <div class="cart-empty">
+                                <h2>Your cart is empty</h2>
+                                <p>Looks like you haven't added any items to your cart yet.</p>
+                                <a href="#" class="btn" data-page="menu">Browse Menu</a>
+                            </div>
+                        </div>
+                    </section>
+                `;
+            }
+            
+            let cartItemsHTML = '';
+            cart.forEach(item => {
+                cartItemsHTML += `
+                    <tr>
+                        <td data-label="Product">
+                            <div class="cart-product">
+                                <img src="${item.image}" alt="${item.name}" class="cart-img">
+                                <div class="cart-product-info">
+                                    <p class="cart-product-title">${item.name}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-label="Price">$${item.price.toFixed(2)}</td>
+                        <td data-label="Quantity">
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">-</button>
+                                <input type="number" class="quantity-input" value="${item.quantity}" 
+                                       onchange="updateQuantity(${item.id}, parseInt(this.value))" min="1">
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
+                            </div>
+                        </td>
+                        <td data-label="Total">$${(item.price * item.quantity).toFixed(2)}</td>
+                        <td data-label="Action">
+                            <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.08; // 8% tax
+            const total = subtotal + tax;
+            
+            return `
+                <section class="cart-section">
+                    <div class="container">
+                        <h2 class="section-title">Your Cart</h2>
+                        
+                        <table class="cart-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${cartItemsHTML}
+                            </tbody>
+                        </table>
+                        
+                        <div class="cart-total">
+                            <div class="cart-total-row">
+                                <span>Subtotal</span>
+                                <span>$${subtotal.toFixed(2)}</span>
+                            </div>
+                            <div class="cart-total-row">
+                                <span>Tax (8%)</span>
+                                <span>$${tax.toFixed(2)}</span>
+                            </div>
+                            <div class="cart-total-row">
+                                <span>Total</span>
+                                <span>$${total.toFixed(2)}</span>
+                            </div>
+                            
+                            <button class="checkout-btn">Proceed to Checkout</button>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+        
+        // Navigation
+        function loadPage(page) {
+            const mainContent = document.getElementById('main-content');
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === page) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Load content based on page
+            switch (page) {
+                case 'home':
+                    mainContent.innerHTML = getHomeContent();
+                    break;
+                case 'menu':
+                    mainContent.innerHTML = getMenuContent();
+                    initMenuFilters();
+                    break;
+                case 'cart':
+                    mainContent.innerHTML = getCartContent();
+                    break;
+                default:
+                    mainContent.innerHTML = getHomeContent();
+            }
+            
+            // Add event listeners to page links
+            document.querySelectorAll('[data-page]').forEach(el => {
+                if (!el.classList.contains('nav-link')) {
+                    el.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        loadPage(el.getAttribute('data-page'));
+                    });
+                }
+            });
+        }
+        
+        // Initialize menu filters
+        function initMenuFilters() {
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const productCards = document.querySelectorAll('.product-card');
+            
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Update active button
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    const category = button.getAttribute('data-category');
+                    
+                    // Filter products
+                    productCards.forEach(card => {
+                        if (category === 'all' || card.getAttribute('data-category') === category) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+        
+        // Mobile navigation toggle
+        document.querySelector('.mobile-toggle').addEventListener('click', () => {
+            document.getElementById('nav-menu').classList.toggle('show');
+        });
+        
+        // Navigation event listeners
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                loadPage(link.getAttribute('data-page'));
+                document.getElementById('nav-menu').classList.remove('show');
+            });
+        });
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartCount();
+            loadPage('home');
+        });
+    </script>
+</body>
+</html>
